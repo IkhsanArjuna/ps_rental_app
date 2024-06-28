@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ps_rental_app/view/page/homepage.dart';
 
 import 'onboarding_page.dart';
 import 'register_page.dart';
@@ -154,7 +155,7 @@ class LoginPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.35,
                   height: MediaQuery.of(context).size.height * 0.08,
                   child: ButtonCustomAuthWidget(
-                      name: "Login", route: OnboardingPage()),
+                      name: "Login", route: Homepage()),
                 ),
               )
             ],
