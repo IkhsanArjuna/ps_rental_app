@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
+import 'package:ps_rental_app/view/page/list_item_page.dart';
 import 'package:ps_rental_app/view/widget/Profile.dart';
 import 'package:ps_rental_app/view/widget/Status.dart';
 
@@ -70,51 +71,49 @@ class _HomepageState extends State<Homepage> {
       body: Consumer<BottomNavProvider>(builder: (context, provider, child) {
         return provider.menuItem[provider.index];
       }),
-      bottomNavigationBar:
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-              child: Consumer<BottomNavProvider>(
-                builder: (context,provider,child) {
-                  return GNav(
-                    rippleColor: Colors.grey[300]!,
-                    hoverColor: Colors.grey[100]!,
-                    gap: 8,
-                    activeColor: Color.fromRGBO(18, 205, 217, 1),
-                    iconSize: 24,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    duration: Duration(milliseconds: 400),
-                    tabBackgroundColor: Color.fromRGBO(37, 40, 54, 1),
-                    selectedIndex: provider.index,
-                    onTabChange: (value) {
-                      provider.changeMenu(value);
-                    },
-                    color: Colors.grey,
-                    tabs: const [
-                      GButton(
-                        icon: Icons.home,
-                        text: 'Home',
-                      ),
-                      GButton(
-                        icon: Icons.history,
-                        text: 'Status',
-                      ),
-                      GButton(
-                        icon: Icons.person,
-                        text: 'Profile',
-                      ),
-                    ],
-                  );
-                }
-              ),
-            ),
-          ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+          child:
+              Consumer<BottomNavProvider>(builder: (context, provider, child) {
+            return GNav(
+              rippleColor: Colors.grey[300]!,
+              hoverColor: Colors.grey[100]!,
+              gap: 8,
+              activeColor: Color.fromRGBO(18, 205, 217, 1),
+              iconSize: 24,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: Duration(milliseconds: 400),
+              tabBackgroundColor: Color.fromRGBO(37, 40, 54, 1),
+              selectedIndex: provider.index,
+              onTabChange: (value) {
+                provider.changeMenu(value);
+              },
+              color: Colors.grey,
+              tabs: const [
+                GButton(
+                  icon: Icons.home,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: Icons.history,
+                  text: 'Status',
+                ),
+                GButton(
+                  icon: Icons.person,
+                  text: 'Profile',
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
     );
   }
 }
 
 class HomeWidget extends StatefulWidget {
-  HomeWidget({
+  const HomeWidget({
     super.key,
     required this.listimage,
   });
@@ -304,25 +303,30 @@ class MenuItemWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).size.height * 0.01,
           horizontal: MediaQuery.of(context).size.width * 0.02),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.1,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(217, 217, 217, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                )),
-            Expanded(
-                child: Center(
-                    child: Text(
-              name,
-              style: GoogleFonts.poppins(color: Colors.white, fontSize: 12),
-            )))
-          ],
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ListItemPage(),));
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(217, 217, 217, 1),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  )),
+              Expanded(
+                  child: Center(
+                      child: Text(
+                name,
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 12),
+              )))
+            ],
+          ),
         ),
       ),
     );
