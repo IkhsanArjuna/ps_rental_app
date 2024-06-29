@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:ps_rental_app/view/widget/Status.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -63,154 +64,7 @@ class _HomepageState extends State<Homepage> {
         ),
         leadingWidth: 200,
       ),
-      body: ListView(
-        children: [
-          CarouselSlider(
-            carouselController: CarouselController(),
-            options: CarouselOptions(
-                viewportFraction: 1,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    current_index = index;
-                  });
-                },
-                enlargeCenterPage: true,
-                autoPlay: true,
-                height: MediaQuery.of(context).size.height * 0.3),
-            items: listimage.map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(i), fit: BoxFit.fill)),
-                  );
-                },
-              );
-            }).toList(),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.1,
-                vertical: MediaQuery.of(context).size.height * 0.03),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.06,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
-              child: Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: MediaQuery.of(context).size.height,
-                    child: Center(
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Text("Sewa apa hari ini?"),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.08,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    color: Color.fromRGBO(19, 26, 42, 1),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        MenuItemWidget(name: "PS 5",),
-                        MenuItemWidget(name: "PS 4",),
-                        MenuItemWidget(name: "PS 3",),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          MenuItemWidget(name: "Xbox",),
-                          MenuItemWidget(name: "Handheld",),
-                          MenuItemWidget(name: "AddOn",),
-                        ],
-                      ),
-                      color: Color.fromRGBO(19, 26, 42, 1),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.08,
-              vertical: MediaQuery.of(context).size.height * 0.02,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.25,
-              color: Colors.blue,
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    color: Color.fromRGBO(19, 26, 42, 1),
-                    child: Text(
-                      "FORUM",
-                      style: GoogleFonts.poppins(
-                          color: Colors.white, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: Color.fromRGBO(19, 26, 42, 1),
-                      child: ListView.builder(
-                        itemCount: 4,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              height: MediaQuery.of(context).size.height,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(217, 217, 217, 1),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
-                                  )),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
+      body: Status(),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
@@ -231,7 +85,7 @@ class _HomepageState extends State<Homepage> {
               ),
               GButton(
                 icon: Icons.history,
-                text: 'History',
+                text: 'Status',
               ),
               GButton(
                 icon: Icons.person,
@@ -241,6 +95,186 @@ class _HomepageState extends State<Homepage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class HomeWidget extends StatefulWidget {
+  HomeWidget({
+    super.key,
+    required this.listimage,
+  });
+
+  final List<String> listimage;
+
+  @override
+  State<HomeWidget> createState() => _HomeWidgetState();
+}
+
+class _HomeWidgetState extends State<HomeWidget> {
+  int indexC = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        CarouselSlider(
+          carouselController: CarouselController(),
+          options: CarouselOptions(
+              viewportFraction: 1,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  indexC = index;
+                });
+              },
+              enlargeCenterPage: true,
+              autoPlay: true,
+              height: MediaQuery.of(context).size.height * 0.3),
+          items: widget.listimage.map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(i), fit: BoxFit.fill)),
+                );
+              },
+            );
+          }).toList(),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.1,
+              vertical: MediaQuery.of(context).size.height * 0.03),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.06,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Text("Sewa apa hari ini?"),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.08,
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.3,
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  color: Color.fromRGBO(19, 26, 42, 1),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MenuItemWidget(
+                        name: "PS 5",
+                      ),
+                      MenuItemWidget(
+                        name: "PS 4",
+                      ),
+                      MenuItemWidget(
+                        name: "PS 3",
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        MenuItemWidget(
+                          name: "Xbox",
+                        ),
+                        MenuItemWidget(
+                          name: "Handheld",
+                        ),
+                        MenuItemWidget(
+                          name: "AddOn",
+                        ),
+                      ],
+                    ),
+                    color: Color.fromRGBO(19, 26, 42, 1),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.08,
+            vertical: MediaQuery.of(context).size.height * 0.02,
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.25,
+            color: Colors.blue,
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  color: Color.fromRGBO(19, 26, 42, 1),
+                  child: Text(
+                    "FORUM",
+                    style: GoogleFonts.poppins(
+                        color: Colors.white, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    color: Color.fromRGBO(19, 26, 42, 1),
+                    child: ListView.builder(
+                      itemCount: 4,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            height: MediaQuery.of(context).size.height,
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(217, 217, 217, 1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15),
+                                )),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 }
