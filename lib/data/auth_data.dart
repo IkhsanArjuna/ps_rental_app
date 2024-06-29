@@ -25,7 +25,6 @@ class AuthData {
 
   Future<bool> registerUser(
       String email, String name, String password) async {
-    UserModel? usermodel;
 
     var response = await http.post(Uri.parse("${baseUrl}/person/register"),
         headers: {
