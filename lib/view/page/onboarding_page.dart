@@ -95,11 +95,11 @@ class ButtonCustomAuthWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
-            side: MaterialStatePropertyAll(BorderSide(color: Colors.white)),
-            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+            side: WidgetStatePropertyAll(BorderSide(color: Colors.white)),
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(7)))),
             backgroundColor:
-                MaterialStatePropertyAll(Color.fromRGBO(47, 128, 237, 1))),
+                WidgetStatePropertyAll(Color.fromRGBO(47, 128, 237, 1))),
         onPressed: () {
           Navigator.pushReplacement(
               context,

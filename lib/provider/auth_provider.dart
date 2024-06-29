@@ -9,36 +9,40 @@ class AuthProvider extends ChangeNotifier {
 
   TextEditingController etEmailLogin = TextEditingController();
   TextEditingController etPasswordLogin = TextEditingController();
-
+  bool registerIsLoading = false;
+  bool loginIsLoading = false;
   UserModel? userLoginNow;
 
   Future<bool> loginUser() async {
-    await AuthData().loginUser(etEmailLogin.text, etPasswordLogin.text).then(
-      (value) {
-        if (value != null) {
-          userLoginNow = value;
-          return true;
-        } else {
-          return false;
-        }
-      },
-    );
-    return false;
+    loginIsLoading = true;
+    notifyListeners();
+    UserModel? data =
+        await AuthData().loginUser(etEmailLogin.text, etPasswordLogin.text);
+    if (data != null) {
+      userLoginNow = data;
+      loginIsLoading = false;
+      notifyListeners();
+      return true;
+    } else {
+      loginIsLoading = false;
+      notifyListeners();
+      return false;
+    }
   }
 
   Future<bool> registerUser() async {
-    await AuthData()
-        .registerUser(
-            etEmailRegister.text, etNameRegister.text, etPasswordRegister.text)
-        .then(
-      (value) {
-        if (value) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-    );
-    return false;
+    registerIsLoading = true;
+    notifyListeners();
+    bool data = await AuthData().registerUser(
+        etEmailRegister.text, etNameRegister.text, etPasswordRegister.text);
+    if (data) {
+      registerIsLoading = false;
+      notifyListeners();
+      return true;
+    } else {
+      registerIsLoading = false;
+      notifyListeners();
+      return false;
+    }
   }
 }

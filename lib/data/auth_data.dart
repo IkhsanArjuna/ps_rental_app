@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:ps_rental_app/data/global_data.dart';
 import 'package:ps_rental_app/models/user_model.dart';
@@ -14,6 +15,7 @@ class AuthData {
           "content-type": "application/json",
         },
         body: jsonEncode({"email": email, "password": password}));
+     log(response.statusCode.toString());
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
       usermodel = UserModel.getDataFromJSON(jsonData);
@@ -23,20 +25,23 @@ class AuthData {
     }
   }
 
-  Future<bool> registerUser(
-      String email, String name, String password) async {
-
-    var response = await http.post(Uri.parse("${baseUrl}/person/register"),
-        headers: {
-          "Accept": "application/json",
-          "content-type": "application/json",
-        },
-        body: jsonEncode({"email": email,"name": name, "password": password}));
-    if (response.statusCode == 200) {
-      return true;
-    } else {
+  Future<bool> registerUser(String email, String name, String password) async {
+    try {
+      var response = await http.post(Uri.parse("${baseUrl}/person/register"),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json",
+          },
+          body:
+              jsonEncode({"email": email, "name": name, "password": password}));
+      log(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
       return false;
     }
-
   }
 }

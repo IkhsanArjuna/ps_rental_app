@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/view/page/homepage.dart';
 
 import 'onboarding_page.dart';
@@ -60,14 +64,22 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      TextFormCustomWidget(
-                        isInvisible: false,
-                        nameField: "Email",
-                      ),
-                      TextFormCustomWidget(
-                        isInvisible: true,
-                        nameField: "Password",
-                      ),
+                      Consumer<AuthProvider>(
+                          builder: (context, provider, child) {
+                        return TextFormCustomWidget(
+                          controller: provider.etEmailLogin,
+                          isInvisible: false,
+                          nameField: "Email",
+                        );
+                      }),
+                      Consumer<AuthProvider>(
+                          builder: (context, provider, child) {
+                        return TextFormCustomWidget(
+                          controller: provider.etPasswordLogin,
+                          isInvisible: true,
+                          nameField: "Password",
+                        );
+                      }),
                       Expanded(
                           child: Padding(
                         padding: EdgeInsets.only(
@@ -128,8 +140,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       TextButton(
                           style: ButtonStyle(
-                              padding:
-                                  MaterialStatePropertyAll(EdgeInsets.zero)),
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero)),
                           onPressed: () {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(
@@ -154,8 +165,63 @@ class LoginPage extends StatelessWidget {
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.35,
                   height: MediaQuery.of(context).size.height * 0.08,
-                  child: ButtonCustomAuthWidget(
-                      name: "Login", route: Homepage()),
+                  child: Consumer<AuthProvider>(
+                      builder: (context, provider, child) {
+                    if (provider.loginIsLoading) {
+                      return ElevatedButton(
+                          style: ButtonStyle(
+                              side: WidgetStatePropertyAll(
+                                  BorderSide(color: Colors.white)),
+                              shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(7)))),
+                              backgroundColor: WidgetStatePropertyAll(
+                                  Color.fromRGBO(47, 128, 237, 1))),
+                          onPressed: () {
+                            log("Loading");
+                          },
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ));
+                    } else {
+                      return ElevatedButton(
+                          style: ButtonStyle(
+                              side: WidgetStatePropertyAll(
+                                  BorderSide(color: Colors.white)),
+                              shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(7)))),
+                              backgroundColor: WidgetStatePropertyAll(
+                                  Color.fromRGBO(47, 128, 237, 1))),
+                          onPressed: () async {
+                            await provider.loginUser().then(
+                              (value) {
+                                if (value) {
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(
+                                    builder: (context) {
+                                      return Homepage();
+                                    },
+                                  ));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text("Internal Error")));
+                                }
+                              },
+                            );
+                          },
+                          child: Text(
+                            "Login",
+                            style: GoogleFonts.nunito(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ));
+                    }
+                  }),
                 ),
               )
             ],
@@ -169,8 +235,12 @@ class LoginPage extends StatelessWidget {
 class TextFormCustomWidget extends StatelessWidget {
   final String nameField;
   final bool isInvisible;
+  final TextEditingController controller;
   const TextFormCustomWidget(
-      {super.key, required this.isInvisible, required this.nameField});
+      {super.key,
+      required this.isInvisible,
+      required this.nameField,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +274,7 @@ class TextFormCustomWidget extends StatelessWidget {
                   left: MediaQuery.of(context).size.width * 0.02,
                   right: MediaQuery.of(context).size.width * 0.15),
               child: TextField(
+                controller: controller,
                 obscureText: isInvisible,
                 style: GoogleFonts.nunito(
                     color: Color.fromRGBO(47, 128, 237, 1), fontSize: 16),
