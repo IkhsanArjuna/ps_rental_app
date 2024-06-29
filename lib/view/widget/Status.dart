@@ -41,7 +41,8 @@ class Status extends StatelessWidget {
                    color: Colors.blue,
                    borderRadius: BorderRadius.all(Radius.circular(15)) 
                   ),
-                  child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start,children: [
+                  child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text("PS5 ULtimate Game Experience",style: GoogleFonts.poppins(
                       color:Colors.white ,fontSize: 12),),
                     Text("LamaPeminjaman: 5 Hari ", style: GoogleFonts.poppins(

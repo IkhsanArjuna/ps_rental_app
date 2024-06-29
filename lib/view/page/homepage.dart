@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:ps_rental_app/view/widget/Profile.dart';
 import 'package:ps_rental_app/view/widget/Status.dart';
 
 class Homepage extends StatefulWidget {
@@ -64,7 +65,7 @@ class _HomepageState extends State<Homepage> {
         ),
         leadingWidth: 200,
       ),
-      body: Status(),
+      body: Profile(),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
