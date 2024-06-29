@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ps_rental_app/provider/auth_provider.dart';
 
 import 'login_page.dart';
 import 'onboarding_page.dart';
@@ -64,12 +68,27 @@ class RegisterPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        TextFormCustomWidget(
-                            isInvisible: false, nameField: "Full Name"),
-                        TextFormCustomWidget(
-                            isInvisible: false, nameField: "Email"),
-                        TextFormCustomWidget(
-                            isInvisible: true, nameField: "Password")
+                        Consumer<AuthProvider>(
+                            builder: (context, provider, child) {
+                          return TextFormCustomWidget(
+                              controller: provider.etNameRegister,
+                              isInvisible: false,
+                              nameField: "Full Name");
+                        }),
+                        Consumer<AuthProvider>(
+                            builder: (context, provider, child) {
+                          return TextFormCustomWidget(
+                              controller: provider.etEmailRegister,
+                              isInvisible: false,
+                              nameField: "Email");
+                        }),
+                        Consumer<AuthProvider>(
+                            builder: (context, provider, child) {
+                          return TextFormCustomWidget(
+                              controller: provider.etPasswordRegister,
+                              isInvisible: true,
+                              nameField: "Password");
+                        })
                       ],
                     ),
                   ),
@@ -102,14 +121,13 @@ class RegisterPage extends StatelessWidget {
                         TextButton(
                             style: ButtonStyle(
                                 padding:
-                                    MaterialStatePropertyAll(EdgeInsets.zero)),
+                                    WidgetStatePropertyAll(EdgeInsets.zero)),
                             onPressed: () {
-                              Navigator.pushReplacement(context,
+                              Navigator.pushReplacement(
+                                  context,
                                   MaterialPageRoute(
-                                builder: (context) {
-                                  return LoginPage();
-                                },
-                              ));
+                                    builder: (context) => LoginPage(),
+                                  ));
                             },
                             child: Text(
                               "Login",
@@ -127,8 +145,63 @@ class RegisterPage extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.35,
                     height: MediaQuery.of(context).size.height * 0.08,
-                    child: ButtonCustomAuthWidget(
-                        name: "Register", route: OnboardingPage()),
+                    child: Consumer<AuthProvider>(
+                        builder: (context, provider, child) {
+                      if (provider.registerIsLoading) {
+                        return ElevatedButton(
+                            style: ButtonStyle(
+                                side: WidgetStatePropertyAll(
+                                    BorderSide(color: Colors.white)),
+                                shape: WidgetStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7)))),
+                                backgroundColor: WidgetStatePropertyAll(
+                                    Color.fromRGBO(47, 128, 237, 1))),
+                            onPressed: () {
+                              log("Loading");
+                            },
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ));
+                      } else {
+                        return ElevatedButton(
+                            style: ButtonStyle(
+                                side: WidgetStatePropertyAll(
+                                    BorderSide(color: Colors.white)),
+                                shape: WidgetStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7)))),
+                                backgroundColor: WidgetStatePropertyAll(
+                                    Color.fromRGBO(47, 128, 237, 1))),
+                            onPressed: () async {
+                              await provider.registerUser().then(
+                                (value) {
+                                  if (value) {
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute(
+                                      builder: (context) {
+                                        return LoginPage();
+                                      },
+                                    ));
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text("Internal Error")));
+                                  }
+                                },
+                              );
+                            },
+                            child: Text(
+                              "Register",
+                              style: GoogleFonts.nunito(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500),
+                            ));
+                      }
+                    }),
                   ),
                 )
               ],
