@@ -15,10 +15,10 @@ class AuthData {
           "content-type": "application/json",
         },
         body: jsonEncode({"email": email, "password": password}));
-     log(response.statusCode.toString());
+    log(response.statusCode.toString());
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
-      usermodel = UserModel.getDataFromJSON(jsonData);
+      usermodel = UserModel.getDataFromJSON(jsonData['data']);
       return usermodel;
     } else {
       return usermodel;
@@ -42,6 +42,20 @@ class AuthData {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<UserModel?> getSingleUser(int idUser) async {
+    UserModel? usermodel;
+
+    var response =
+        await http.get(Uri.parse("${baseUrl}/person/single/${idUser}"));
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      usermodel = UserModel.getDataFromJSON(jsonData['data']);
+      return usermodel;
+    } else {
+      return usermodel;
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
 import 'package:ps_rental_app/view/page/list_item_page.dart';
 import 'package:ps_rental_app/view/widget/Profile.dart';
@@ -31,12 +32,28 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         actions: [
+          Consumer<BottomNavProvider>(
+            builder: (context, value, child) {
+              if (value.index == 1) {
+                return IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                  icon: Icon(Icons.search),
+                  color: Colors.white,
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
           IconButton(
+            padding: EdgeInsets.zero,
             onPressed: () {},
             icon: Icon(Icons.shopping_cart_outlined),
             color: Colors.white,
           ),
           IconButton(
+            padding: EdgeInsets.zero,
             onPressed: () {},
             icon: Icon(Icons.message_outlined),
             color: Colors.white,
@@ -50,20 +67,24 @@ class _HomepageState extends State<Homepage> {
           child: Container(
             width: MediaQuery.of(context).size.width * 0.2,
             height: MediaQuery.of(context).size.height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "Selamat Datang",
-                  style: GoogleFonts.poppins(color: Colors.white),
-                ),
-                Text(
-                  "Pelanggan",
-                  style: GoogleFonts.poppins(color: Colors.white),
-                ),
-              ],
-            ),
+            child: Consumer<AuthProvider>(builder: (context, provider, child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "Selamat Datang",
+                    style: GoogleFonts.poppins(color: Colors.white),
+                  ),
+                  provider.userLoginNow == null
+                      ? Text("Auth Error")
+                      : Text(
+                          provider.userLoginNow!.name,
+                          style: GoogleFonts.poppins(color: Colors.white),
+                        ),
+                ],
+              );
+            }),
           ),
         ),
         leadingWidth: 200,
@@ -305,7 +326,11 @@ class MenuItemWidget extends StatelessWidget {
           horizontal: MediaQuery.of(context).size.width * 0.02),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ListItemPage(),));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ListItemPage(),
+              ));
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.2,
