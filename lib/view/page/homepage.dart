@@ -28,12 +28,38 @@ class _HomepageState extends State<Homepage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.message),
+            icon: Icon(Icons.shopping_cart_outlined),
+            color: Colors.white,
           ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.shop))
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.message_outlined),
+            color: Colors.white,
+          )
         ],
-        leading: Column(
-          children: [Text("Selamat Datang"), Text("Pelanggan")],
+        leading: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.04,
+            vertical: MediaQuery.of(context).size.height * 0.009,
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Selamat Datang",
+                  style: GoogleFonts.poppins(color: Colors.white),
+                ),
+                Text(
+                  "Pelanggan",
+                  style: GoogleFonts.poppins(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
         ),
         leadingWidth: 200,
       ),
@@ -112,9 +138,9 @@ class _HomepageState extends State<Homepage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MenuItemWidget(),
-                        MenuItemWidget(),
-                        MenuItemWidget(),
+                        MenuItemWidget(name: "PS 5",),
+                        MenuItemWidget(name: "PS 4",),
+                        MenuItemWidget(name: "PS 3",),
                       ],
                     ),
                   ),
@@ -123,9 +149,9 @@ class _HomepageState extends State<Homepage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          MenuItemWidget(),
-                          MenuItemWidget(),
-                          MenuItemWidget(),
+                          MenuItemWidget(name: "Xbox",),
+                          MenuItemWidget(name: "Handheld",),
+                          MenuItemWidget(name: "AddOn",),
                         ],
                       ),
                       color: Color.fromRGBO(19, 26, 42, 1),
@@ -149,7 +175,7 @@ class _HomepageState extends State<Homepage> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.04,
-                     color: Color.fromRGBO(19, 26, 42, 1),
+                    color: Color.fromRGBO(19, 26, 42, 1),
                     child: Text(
                       "FORUM",
                       style: GoogleFonts.poppins(
@@ -158,7 +184,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                   Expanded(
                     child: Container(
-                       color: Color.fromRGBO(19, 26, 42, 1),
+                      color: Color.fromRGBO(19, 26, 42, 1),
                       child: ListView.builder(
                         itemCount: 4,
                         scrollDirection: Axis.horizontal,
@@ -168,12 +194,11 @@ class _HomepageState extends State<Homepage> {
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.4,
                               height: MediaQuery.of(context).size.height,
-                              decoration: BoxDecoration(color: Color.fromRGBO(217, 217, 217, 1)
-                               ,borderRadius: BorderRadius.all(Radius.circular(15),
-                              
-                              )),
-                              
-
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(217, 217, 217, 1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  )),
                             ),
                           );
                         },
@@ -221,9 +246,9 @@ class _HomepageState extends State<Homepage> {
 }
 
 class MenuItemWidget extends StatelessWidget {
-  const MenuItemWidget({
-    super.key,
-  });
+  final String name;
+
+  const MenuItemWidget({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +271,7 @@ class MenuItemWidget extends StatelessWidget {
             Expanded(
                 child: Center(
                     child: Text(
-              "PS 5",
+              name,
               style: GoogleFonts.poppins(color: Colors.white, fontSize: 12),
             )))
           ],
