@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
 import 'package:ps_rental_app/view/widget/Profile.dart';
 import 'package:ps_rental_app/view/widget/Status.dart';
 
@@ -65,37 +67,48 @@ class _HomepageState extends State<Homepage> {
         ),
         leadingWidth: 200,
       ),
-      body: Profile(),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-          child: GNav(
-            rippleColor: Colors.grey[300]!,
-            hoverColor: Colors.grey[100]!,
-            gap: 8,
-            activeColor: Color.fromRGBO(18, 205, 217, 1),
-            iconSize: 24,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            duration: Duration(milliseconds: 400),
-            tabBackgroundColor: Color.fromRGBO(37, 40, 54, 1),
-            color: Colors.grey,
-            tabs: const [
-              GButton(
-                icon: Icons.home,
-                text: 'Home',
+      body: Consumer<BottomNavProvider>(builder: (context, provider, child) {
+        return provider.menuItem[provider.index];
+      }),
+      bottomNavigationBar:
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+              child: Consumer<BottomNavProvider>(
+                builder: (context,provider,child) {
+                  return GNav(
+                    rippleColor: Colors.grey[300]!,
+                    hoverColor: Colors.grey[100]!,
+                    gap: 8,
+                    activeColor: Color.fromRGBO(18, 205, 217, 1),
+                    iconSize: 24,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    duration: Duration(milliseconds: 400),
+                    tabBackgroundColor: Color.fromRGBO(37, 40, 54, 1),
+                    selectedIndex: provider.index,
+                    onTabChange: (value) {
+                      provider.changeMenu(value);
+                    },
+                    color: Colors.grey,
+                    tabs: const [
+                      GButton(
+                        icon: Icons.home,
+                        text: 'Home',
+                      ),
+                      GButton(
+                        icon: Icons.history,
+                        text: 'Status',
+                      ),
+                      GButton(
+                        icon: Icons.person,
+                        text: 'Profile',
+                      ),
+                    ],
+                  );
+                }
               ),
-              GButton(
-                icon: Icons.history,
-                text: 'Status',
-              ),
-              GButton(
-                icon: Icons.person,
-                text: 'Profile',
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 }
