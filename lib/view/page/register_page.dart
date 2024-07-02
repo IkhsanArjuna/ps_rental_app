@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 
 import 'login_page.dart';
-import 'onboarding_page.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});

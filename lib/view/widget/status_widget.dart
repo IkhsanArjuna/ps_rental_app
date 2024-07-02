@@ -7,8 +7,8 @@ import 'package:ps_rental_app/data/rent_data.dart';
 import 'package:ps_rental_app/models/rent_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 
-class Status extends StatelessWidget {
-  const Status({super.key});
+class StatusWidget extends StatelessWidget {
+  const StatusWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class Status extends StatelessWidget {
                                           color: Colors.white, fontSize: 11),
                                     ),
                                     Text(
-                                      "Status: ${allRent[index].status} ",
+                                      "StatusWidget: ${allRent[index].status} ",
                                       style: GoogleFonts.poppins(
                                           color: Colors.white, fontSize: 11),
                                     )

@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
-import 'package:ps_rental_app/view/page/homepage.dart';
-
-import 'onboarding_page.dart';
+import 'package:ps_rental_app/view/page/home_page.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatelessWidget {

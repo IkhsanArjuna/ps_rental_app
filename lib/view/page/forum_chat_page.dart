@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ps_rental_app/models/forum_model.dart';
 
 class ForumChatPage extends StatelessWidget {
-  const ForumChatPage({super.key});
+  final ForumModel forumModel;
+  const ForumChatPage({super.key, required this.forumModel});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(14, 19, 31, 1),
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         leading: IconButton(
             style: ButtonStyle(
                 backgroundColor:
@@ -41,8 +44,10 @@ class ForumChatPage extends StatelessWidget {
                         height: MediaQuery.of(context).size.height,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: const NetworkImage(
-                                    "https://images8.alphacoders.com/119/1196416.jpg"),
+                                image: forumModel.image == ''
+                                    ? NetworkImage(
+                                        "https://images8.alphacoders.com/119/1196416.jpg")
+                                    : NetworkImage(forumModel.image),
                                 fit: BoxFit.cover),
                             color: Colors.grey,
                             shape: BoxShape.circle),
@@ -62,7 +67,7 @@ class ForumChatPage extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 // ignore: unnecessary_string_interpolations
-                                "Event Test",
+                                forumModel.name,
                                 style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -74,7 +79,7 @@ class ForumChatPage extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 0),
-                                  child: Text("Active Now",
+                                  child: Text(forumModel.create_at,
                                       style: GoogleFonts.poppins(
                                           color: Colors.white)),
                                 ),
@@ -103,10 +108,123 @@ class ForumChatPage extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: index % 2 == 0
-                          ? ReceiverWidget()
-                          : SenderForumWidget(),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.015,
+                          vertical: MediaQuery.of(context).size.height * 0.01),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        constraints: BoxConstraints(
+                            maxHeight: double.infinity, minHeight: 0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              constraints: BoxConstraints(
+                                  maxHeight: double.infinity, minHeight: 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.06,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                "https://images8.alphacoders.com/119/1196416.jpg"),
+                                            fit: BoxFit.fill),
+                                        color: Colors.greenAccent,
+                                        shape: BoxShape.circle),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                                child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.03,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        "Altera RM",
+                                        style: GoogleFonts.poppins(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.13,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                "https://c4.wallpaperflare.com/wallpaper/249/176/877/exusiai-arknights-texas-arknights-arknights-anime-clouds-hd-wallpaper-preview.jpg"),
+                                            fit: BoxFit.cover),
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(8))),
+                                  ),
+                                  Container(
+                                    constraints: BoxConstraints(
+                                        maxHeight: double.infinity,
+                                        minHeight: 0,
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
+                                        minWidth:
+                                            MediaQuery.of(context).size.width *
+                                                0.4),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                            bottomRight: Radius.circular(8))),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.008,
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.01),
+                                      child: Text("Halo gaes met"),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.001,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.width *
+                                                0.01),
+                                    child: Text(
+                                      "08.15 AM",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.grey, fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ))
+                          ],
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -174,6 +292,66 @@ class ForumChatPage extends StatelessWidget {
             ))
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ImageSenderWidget extends StatelessWidget {
+  const ImageSenderWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      constraints: BoxConstraints(maxHeight: double.infinity, minHeight: 0),
+      color: Colors.amberAccent,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.15,
+            decoration: BoxDecoration(
+                color: Colors.blueAccent,
+                image: DecorationImage(
+                    image: NetworkImage(
+                        "https://c4.wallpaperflare.com/wallpaper/578/135/704/video-game-arknights-amiya-arknights-hd-wallpaper-preview.jpg"),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(0),
+                    bottomRight: Radius.circular(0),
+                    bottomLeft: Radius.circular(0),
+                    topLeft: Radius.circular(8))),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            constraints:
+                BoxConstraints(maxHeight: double.infinity, minHeight: 0),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(8))),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.01),
+              child: Text(
+                "Halo Gaessss",
+                style: GoogleFonts.poppins(color: Colors.black),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.02),
+            child: Text(
+              "08.15 AM",
+              style: GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -252,6 +430,15 @@ class ReceiverWidget extends StatelessWidget {
                         vertical: MediaQuery.of(context).size.height * 0.008,
                         horizontal: MediaQuery.of(context).size.width * 0.01),
                     child: Text("Halo gaes met malam sdsdsdsdsdsdsdsdsdsd"),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.02),
+                  child: Text(
+                    "08.15 AM",
+                    style:
+                        GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
                   ),
                 )
               ],

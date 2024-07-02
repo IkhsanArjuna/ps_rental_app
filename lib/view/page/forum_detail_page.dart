@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ps_rental_app/models/forum_model.dart';
 import 'package:ps_rental_app/view/page/forum_chat_page.dart';
 
 class ForumDetailPage extends StatelessWidget {
-  const ForumDetailPage({super.key});
+  final ForumModel forumModel;
+  const ForumDetailPage({super.key,required this.forumModel});
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,8 @@ class ForumDetailPage extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.greenAccent,
                       image: DecorationImage(
-                          image: NetworkImage(
-                              "https://cdn.idntimes.com/content-images/community/2019/06/razer-blade-stealth-open-100763052-large-cc6ea3af72b05909709ce04df09aad4f_600x400.jpg"),
+                          image: forumModel.image == '' ? NetworkImage(
+                              "https://cdn.idntimes.com/content-images/community/2019/06/razer-blade-stealth-open-100763052-large-cc6ea3af72b05909709ce04df09aad4f_600x400.jpg") : NetworkImage(forumModel.image),
                           fit: BoxFit.cover)),
                 ),
                 Positioned(
@@ -54,8 +56,8 @@ class ForumDetailPage extends StatelessWidget {
                         color: Colors.redAccent,
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: NetworkImage(
-                                "https://cdn.idntimes.com/content-images/community/2019/06/razer-blade-stealth-open-100763052-large-cc6ea3af72b05909709ce04df09aad4f_600x400.jpg"),
+                            image: forumModel.image == '' ? NetworkImage(
+                                "https://cdn.idntimes.com/content-images/community/2019/06/razer-blade-stealth-open-100763052-large-cc6ea3af72b05909709ce04df09aad4f_600x400.jpg") : NetworkImage(forumModel.image),
                             fit: BoxFit.cover)),
                   ),
                 )
@@ -89,7 +91,7 @@ class ForumDetailPage extends StatelessWidget {
                         child: Text(
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          "Event Gaming",
+                          forumModel.name,
                           style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 22,
@@ -115,7 +117,7 @@ class ForumDetailPage extends StatelessWidget {
                         horizontal: MediaQuery.of(context).size.width * 0.01,
                         vertical: MediaQuery.of(context).size.height * 0.002),
                     child: Text(
-                      "Selamat datang di forum 'Komunitas & Event Gaming' - tempat berkumpulnya para gamer yang menggunakan layanan rental PS5 kami.",
+                      forumModel.deskripsi,
                       style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -144,7 +146,7 @@ class ForumDetailPage extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ForumChatPage(),
+                    builder: (context) => ForumChatPage(forumModel: forumModel,),
                   ));
             },
             child: Text(

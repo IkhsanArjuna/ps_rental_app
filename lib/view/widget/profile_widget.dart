@@ -6,8 +6,8 @@ import 'package:ps_rental_app/data/auth_data.dart';
 import 'package:ps_rental_app/models/user_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({super.key});
+class ProfileWidget extends StatelessWidget {
+  const ProfileWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
