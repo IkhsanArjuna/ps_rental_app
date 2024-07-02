@@ -6,6 +6,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
+import 'package:ps_rental_app/view/page/forum_detail_page.dart';
 import 'package:ps_rental_app/view/page/list_chat.dart';
 import 'package:ps_rental_app/view/page/list_item_page.dart';
 import 'package:ps_rental_app/view/page/test_page.dart';
@@ -51,7 +52,11 @@ class _HomepageState extends State<Homepage> {
           IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage(),));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TestPage(),
+                  ));
             },
             icon: Icon(Icons.shopping_cart_outlined),
             color: Colors.white,
@@ -300,14 +305,21 @@ class _HomeWidgetState extends State<HomeWidget> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: MediaQuery.of(context).size.height,
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(217, 217, 217, 1),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(15),
+                          child: GestureDetector(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ForumDetailPage(),
                                 )),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              height: MediaQuery.of(context).size.height,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(217, 217, 217, 1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  )),
+                            ),
                           ),
                         );
                       },
