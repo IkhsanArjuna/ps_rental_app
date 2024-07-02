@@ -21,5 +21,22 @@ class ItemData {
     }
     return listItem;
   }
+
+  Future<List<ItemModel>> getAllItemSearch(String searchString) async {
+    List<ItemModel> listItem = [];
+    var response = await http
+        .get(Uri.parse("${baseUrl}/item/search?item_name=${searchString}"));
+    if (response.statusCode == 200) {
+      var jsonObject = jsonDecode(response.body);
+      List<dynamic> jsonMapping = (jsonObject as Map<String, dynamic>)['data'];
+      for (var element in jsonMapping) {
+        listItem.add(ItemModel.getDataFromJSON(element));
+      }
+      return listItem;
+    } else {
+      return listItem;
+    }
+  }
+
   
 }
