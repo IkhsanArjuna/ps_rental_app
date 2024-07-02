@@ -70,7 +70,7 @@ class ListItemPage extends StatelessWidget {
                       color:Colors.white ,fontSize: 12),),
                   Text("Rp 250.000",style: GoogleFonts.poppins(
                       color:Colors.white ,fontSize: 12),),
-                  Text("Paket rental PS5 Ultimate Game Experience memberikan Anda kesempatan untuk menikmati berbagai game populer dengan satu paket lengkap. Dirancang untuk gamer yang ingin merasakan variasi permainan terbaik, paket ini mencakup tiga game top yang akan memberikan hiburan tanpa henti. Dengan durasi sewa yang fleksibel, Anda dapat menikmati game-game ini dengan nyaman sesuai dengan jadwal Anda. Daftar game; Spider-Man: Miles Morales, Horizon Forbidden West, FIFA 23",style: GoogleFonts.poppins(
+                  Text("",style: GoogleFonts.poppins(
                       color:Colors.white ,fontSize: 6),),
                 ],),
                 
