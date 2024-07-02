@@ -69,100 +69,222 @@ class DetailItemPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:  EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width*0.03,
-              vertical: MediaQuery.of(context).size.height*0.01,
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.03,
+              vertical: MediaQuery.of(context).size.height * 0.01,
             ),
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.12,
-              color: Color.fromARGB(14, 19 ,31, 1),
+              color: Color.fromARGB(14, 19, 31, 1),
               child: Column(
                 children: [
                   Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.05,
-              color:Color.fromRGBO(14, 19, 31, 1),
-
-              child: Row(
-                mainAxisAlignment:MainAxisAlignment.start,crossAxisAlignment:
-                 CrossAxisAlignment.start,
-                 children: [
-                  Text("Pilih Durasi: ",style: GoogleFonts.poppins(
-                        color:Colors.white ,fontSize: 12, fontWeight: FontWeight.bold),),
-                  Text("Durasi Peminjaman",style: GoogleFonts.poppins(
-                        color:Colors.white ,fontSize: 12),),
-                 ],
-
-                
-                
-              ),
-              
-            
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    color: Color.fromRGBO(14, 19, 31, 1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Pilih Durasi: ",
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Durasi Peminjaman",
+                          style: GoogleFonts.poppins(
+                              color: Colors.white, fontSize: 12),
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.07,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  DurasiPinjam(
-                    name: "1D",
-                  ),
-                  DurasiPinjam(
-                    name: "3D",
-                  ),
-                  DurasiPinjam(
-                    name: "5D",
-                  ),
-                  DurasiPinjam(
-                    name: "1W",
-                  ),
-                ],
-              ),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        DurasiPinjam(
+                          name: "1D",
+                        ),
+                        DurasiPinjam(
+                          name: "3D",
+                        ),
+                        DurasiPinjam(
+                          name: "5D",
+                        ),
+                        DurasiPinjam(
+                          name: "1W",
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
             ),
           ),
-          Container(
-             width: MediaQuery.of(context).size.width,
-            constraints: BoxConstraints(
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.03,
+              vertical: MediaQuery.of(context).size.height * 0.001,
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.08,
+              color: Color.fromRGBO(14, 19, 31, 1),
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    color: Color.fromRGBO(14, 19, 31, 1),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Detail Produk ",
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    color: Color.fromRGBO(14, 19, 31, 1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                     children: [
+                      Container(
+
+                    width: MediaQuery.of(context).size.width*0.4,
+                    height: MediaQuery.of(context).size.height ,
+                    color: Color.fromRGBO(14, 19, 31, 1),
+                    child:  Text(
+                          "Zona ",
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 13,),
+                        )
+,
+
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                                            height: MediaQuery.of(context).size.height ,
+                                            color: Color.fromRGBO(14, 19, 31, 1),
+                          child:  Text(
+                          "Playstation 5 ",
+                          style: GoogleFonts.poppins(
+                              color: Colors.blue,
+                              fontSize: 13,),
+                        ) 
+                          
+                        ),
+                      )
+                      
+                     ],
+                    ),
+                    
+
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding:  EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.03,
+              vertical: MediaQuery.of(context).size.height * 0.001,
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.03,
+              color: Color.fromRGBO(14, 19, 31, 1),
+              child: Text(
+                          "Deskripsi Produk ",
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ) ,
               
             ),
-
+          ),
+          Container(  
+             width: MediaQuery.of(context).size.width * 0.4,
+            constraints:
+                BoxConstraints(maxHeight: double.infinity, minHeight: 0),
+                child:Text(
+                          "Paket rental PS5 Ultimate Game Experience memberikan Anda kesempatan untuk menikmati berbagai game populer dengan satu paket lengkap. Dirancang untuk gamer yang ingin merasakan variasi permainan terbaik, paket ini mencakup tiga game top yang akan memberikan hiburan tanpa henti. Dengan durasi sewa yang fleksibel, Anda dapat menikmati game-game ini dengan nyaman sesuai dengan jadwal Anda.Fitur Paket:Konsol PlayStation 5 (PS5)Konsol gaming terbaru dari Sony dengan performa superior.Mendukung resolusi hingga 4K dengan frame rate tinggi.Tiga Game PopulerSpider-Man: Miles MoralesJelajahi kota New York sebagai Spider-Man baru dengan kekuatan dan cerita unik.Grafis dan animasi yang memukau, serta gameplay yang dinamis.Horizon Forbidden WestPetualangan epik di dunia post-apocalyptic dengan karakter utama Aloy.Dunia terbuka yang luas dengan berbagai misi dan aktivitas.FIFA 23Pengalaman bermain sepak bola yang realistis dengan berbagai mode permainan.Update terbaru tim, pemain, dan fitur-fitur inovatif dalam permainan.Durasi Sewa FleksibelTersedia pilihan durasi sewa mulai dari 3 hari, 1 minggu, hingga 2 minggu.Durasi sewa yang lebih panjang memberikan nilai lebih dengan biaya yang lebih ekonomis.",
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 15),
+                        ), 
           )
-
         ],
+
+      ),
+      bottomSheet: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height*0.08,
+        color: Colors.amber,
+        child: Row(
+          children: [
+            Container(
+        width: MediaQuery.of(context).size.width*0.2,
+        height: MediaQuery.of(context).size.height,
+        color: Colors.blue,
+              
+
+            )
+          ],
+        ),
+        
       ),
     );
   }
 }
 
 class DurasiPinjam extends StatelessWidget {
- final String name;
+  final String name;
 
   const DurasiPinjam({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width*0.03,
-                  vertical: MediaQuery.of(context).size.height*0.01,
-    
-      ),
-      child: Container(
-      width: MediaQuery.of(context).size.width*0.13,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        color:Color.fromRGBO(217, 217, 217, 1),
-        borderRadius:BorderRadius.all(Radius.circular(15)) ),
-      child: Center(
-        child: Text(name,style: GoogleFonts.poppins(
-          color:Colors.black ,fontSize: 12,fontWeight: FontWeight.bold),), 
-      ),
-                    )
-    );
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.03,
+          vertical: MediaQuery.of(context).size.height * 0.01,
+        ),
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.13,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+              color: Color.fromRGBO(217, 217, 217, 1),
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+          child: Center(
+            child: Text(
+              name,
+              style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ));
   }
 }
