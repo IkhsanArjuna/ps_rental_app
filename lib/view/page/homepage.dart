@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:ps_rental_app/data/forum_data.dart';
+import 'package:ps_rental_app/models/forum_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
 import 'package:ps_rental_app/view/page/forum_detail_page.dart';
@@ -171,11 +173,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           carouselController: CarouselController(),
           options: CarouselOptions(
               viewportFraction: 1,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  indexC = index;
-                });
-              },
+              onPageChanged: (index, reason) {},
               enlargeCenterPage: true,
               autoPlay: true,
               height: MediaQuery.of(context).size.height * 0.3),
@@ -282,50 +280,124 @@ class _HomeWidgetState extends State<HomeWidget> {
           ),
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.32,
             color: Colors.blue,
             child: Column(
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.04,
+                  height: MediaQuery.of(context).size.height * 0.06,
                   color: Color.fromRGBO(19, 26, 42, 1),
-                  child: Text(
-                    "FORUM",
-                    style: GoogleFonts.poppins(
-                        color: Colors.white, fontWeight: FontWeight.w500),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "FORUM",
+                        style: GoogleFonts.poppins(
+                            color: Colors.white, fontWeight: FontWeight.w500),
+                      ),
+                      TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Lainnya",
+                            style: GoogleFonts.poppins(color: Colors.white),
+                          ))
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    color: Color.fromRGBO(19, 26, 42, 1),
-                    child: ListView.builder(
-                      itemCount: 4,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ForumDetailPage(),
-                                )),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              height: MediaQuery.of(context).size.height,
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(217, 217, 217, 1),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
-                                  )),
+                FutureBuilder(
+                    future: ForumData().getALlForum(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      } else if (snapshot.data!.isEmpty) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: Center(
+                            child: Text(
+                              "No Forum Yet",
+                              style: GoogleFonts.poppins(color: Colors.white),
                             ),
                           ),
                         );
-                      },
-                    ),
-                  ),
-                )
+                      } else {
+                        List<ForumModel> forumData = (snapshot.data!);
+                        return Expanded(
+                          child: Container(
+                            color: Color.fromRGBO(19, 26, 42, 1),
+                            child: ListView.builder(
+                              itemCount: forumData.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForumDetailPage(),
+                                        )),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.2,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: forumData[index]
+                                                                .image ==
+                                                            ''
+                                                        ? NetworkImage(
+                                                            "https://asset.kompas.com/crops/hXNsF__b81HEedTs7CMy4ujjGhg=/121x60:1894x1242/750x500/data/photo/2022/06/29/62bc1de39ef4c.jpg")
+                                                        : NetworkImage(
+                                                            forumData[index]
+                                                                .image),
+                                                    fit: BoxFit.cover),
+                                                color: Color.fromRGBO(
+                                                    217, 217, 217, 1),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(15),
+                                                )),
+                                          ),
+                                          Expanded(
+                                              child: Center(
+                                            child: Text(
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              forumData[index].name,
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.white),
+                                            ),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    })
               ],
             ),
           ),
