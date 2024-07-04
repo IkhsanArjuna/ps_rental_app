@@ -1,10 +1,83 @@
+import 'dart:developer';
+import 'dart:ui';
+import 'package:provider/provider.dart';
+import 'package:ps_rental_app/provider/chat_forum_provider.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ps_rental_app/data/forum_data.dart';
+import 'package:ps_rental_app/models/chat_forum_model.dart';
 import 'package:ps_rental_app/models/forum_model.dart';
+import 'package:ps_rental_app/models/user_model.dart';
 
-class ForumChatPage extends StatelessWidget {
+class ForumChatPage extends StatefulWidget {
   final ForumModel forumModel;
-  const ForumChatPage({super.key, required this.forumModel});
+  final UserModel userModel;
+  const ForumChatPage(
+      {super.key, required this.forumModel, required this.userModel});
+
+  @override
+  State<ForumChatPage> createState() => _ForumChatPageState();
+}
+
+class _ForumChatPageState extends State<ForumChatPage> {
+  late IO.Socket socket;
+  double getWidth() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+
+    double physicalWidth = view.physicalSize.width;
+
+    double devicePixelRatio = view.devicePixelRatio;
+
+    double screenWidth = physicalWidth / devicePixelRatio;
+    return screenWidth;
+  }
+
+  double getHeight() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+    double physicalHeight = view.physicalSize.height;
+
+    double devicePixelRatio = view.devicePixelRatio;
+    double screenHeight = physicalHeight / devicePixelRatio;
+    return screenHeight;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeSocket();
+  }
+
+  @override
+  void dispose() {
+    socket.dispose();
+    super.dispose();
+  }
+
+  void initializeSocket() {
+    socket = IO.io('https://rentconsoleapi.yudho.online', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+    socket.connect();
+
+    socket.onConnect((_) {
+      log('Connected to the server');
+      socket.emit('msg', 'Hello from Flutter');
+    });
+
+    socket.onDisconnect((_) {
+      log('Disconnected from the server');
+    });
+
+    socket.on('newMessage', (data) {
+      log('New message from server: $data');
+      ChatForumModel newChat = ChatForumModel.getDataFromJSON(data);
+      if (newChat.idForum == widget.forumModel.idForum) {
+        context.read<ChatForumProvider>().updateChatAwal(newChat);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,38 +96,38 @@ class ForumChatPage extends StatelessWidget {
               Icons.arrow_back_ios_new,
               color: Colors.white,
             )),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+        toolbarHeight: getHeight() * 0.08,
         flexibleSpace: SafeArea(
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.2,
-            height: MediaQuery.of(context).size.height,
+            width: getWidth() * 0.2,
+            height: getHeight(),
             color: Colors.blueAccent,
             child: Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.13,
+                  width: getWidth() * 0.13,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  height: MediaQuery.of(context).size.height,
+                  width: getWidth() * 0.6,
+                  height: getHeight(),
                   child: Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.height,
+                        width: getWidth() * 0.2,
+                        height: getHeight(),
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: forumModel.image == ''
+                                image: widget.forumModel.image == ''
                                     ? NetworkImage(
                                         "https://images8.alphacoders.com/119/1196416.jpg")
-                                    : NetworkImage(forumModel.image),
+                                    : NetworkImage(widget.forumModel.image),
                                 fit: BoxFit.cover),
                             color: Colors.grey,
                             shape: BoxShape.circle),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        height: MediaQuery.of(context).size.height,
+                        width: getWidth() * 0.4,
+                        height: getHeight(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -67,7 +140,7 @@ class ForumChatPage extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 // ignore: unnecessary_string_interpolations
-                                forumModel.name,
+                                widget.forumModel.name,
                                 style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -79,7 +152,7 @@ class ForumChatPage extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 0),
-                                  child: Text(forumModel.create_at,
+                                  child: Text(widget.forumModel.create_at,
                                       style: GoogleFonts.poppins(
                                           color: Colors.white)),
                                 ),
@@ -96,154 +169,88 @@ class ForumChatPage extends StatelessWidget {
           ),
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-            return Column(
-              children: [
-                ListView.builder(
-                  itemCount: 10,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.015,
-                          vertical: MediaQuery.of(context).size.height * 0.01),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        constraints: BoxConstraints(
-                            maxHeight: double.infinity, minHeight: 0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.2,
-                              constraints: BoxConstraints(
-                                  maxHeight: double.infinity, minHeight: 0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.06,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                "https://images8.alphacoders.com/119/1196416.jpg"),
-                                            fit: BoxFit.fill),
-                                        color: Colors.greenAccent,
-                                        shape: BoxShape.circle),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                                child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.03,
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        "Altera RM",
-                                        style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.13,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                "https://c4.wallpaperflare.com/wallpaper/249/176/877/exusiai-arknights-texas-arknights-arknights-anime-clouds-hd-wallpaper-preview.jpg"),
-                                            fit: BoxFit.cover),
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(8))),
-                                  ),
-                                  Container(
-                                    constraints: BoxConstraints(
-                                        maxHeight: double.infinity,
-                                        minHeight: 0,
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width *
-                                                0.4,
-                                        minWidth:
-                                            MediaQuery.of(context).size.width *
-                                                0.4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(8))),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.008,
-                                          horizontal: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.01),
-                                      child: Text("Halo gaes met"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.001,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            MediaQuery.of(context).size.width *
-                                                0.01),
-                                    child: Text(
-                                      "08.15 AM",
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.grey, fontSize: 12),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ))
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+      body: FutureBuilder(
+          future: ForumData().getAllMessageForum(widget.forumModel.idForum),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.data!.isEmpty) {
+              return Center(
+                child: Text(
+                  "No Chatting Yet",
+                  style: GoogleFonts.poppins(
+                      color: Colors.white, fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.08,
-                )
-              ],
-            );
-          }, childCount: 1))
-        ],
-      ),
+              );
+            } else {
+              List<ChatForumModel> test = (snapshot.data!);
+              List<ChatForumModel> chatsList = test.reversed.toList();
+              context.read<ChatForumProvider>().addChatAwal(chatsList);
+              return CustomScrollView(
+                slivers: [
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                    return Column(
+                      children: [
+                        Consumer<ChatForumProvider>(
+                            builder: (context, provider, child) {
+                          return ListView.builder(
+                            itemCount: provider.chatAwal.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: getWidth() * 0.015,
+                                    vertical: getHeight() * 0.01),
+                                child: Builder(builder: (context) {
+                                  if (provider.chatAwal[index].idUser ==
+                                      widget.userModel.idUser) {
+                                    if (provider.chatAwal[index].type == 'text') {
+                                      return SenderForumWidget(
+                                        chatForumModel: provider.chatAwal[index],
+                                      );
+                                    } else {
+                                      return ImageSenderWidget(
+                                        chatForumModel: provider.chatAwal[index],
+                                      );
+                                    }
+                                  } else {
+                                    if (provider.chatAwal[index].type == 'text') {
+                                      return ReceiverWidget(
+                                        chatForumModel: provider.chatAwal[index],
+                                      );
+                                    } else {
+                                      return ImageReceiverWidget(
+                                        chatForumModel: provider.chatAwal[index],
+                                      );
+                                    }
+                                  }
+                                }),
+                              );
+                            },
+                          );
+                        }),
+                        SizedBox(
+                          height: getHeight() * 0.08,
+                        )
+                      ],
+                    );
+                  }, childCount: 1))
+                ],
+              );
+            }
+          }),
       bottomSheet: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.08,
+        width: getWidth(),
+        height: getHeight() * 0.08,
         child: Row(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.13,
-              height: MediaQuery.of(context).size.height,
+              width: getWidth() * 0.13,
+              height: getHeight(),
               child: IconButton(
                   onPressed: () {},
                   icon: Icon(
@@ -254,39 +261,60 @@ class ForumChatPage extends StatelessWidget {
             Expanded(
                 child: Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.01,
-                  horizontal: MediaQuery.of(context).size.width * 0.01),
+                  vertical: getHeight() * 0.01, horizontal: getWidth() * 0.01),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(12))),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.01),
-                  child: TextFormField(
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  MediaQuery.of(context).size.width * 0.005,
-                              vertical:
-                                  MediaQuery.of(context).size.height * 0.008),
-                          child: IconButton(
-                              padding: EdgeInsets.zero,
-                              style: ButtonStyle(
-                                  backgroundColor: WidgetStatePropertyAll(
-                                      Color.fromRGBO(70, 41, 242, 1))),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              )),
-                        )),
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.01),
+                  child: Consumer<ChatForumProvider>(
+                      builder: (context, provider, child) {
+                    return TextFormField(
+                      controller: provider.etMessage,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      textAlignVertical: TextAlignVertical.center,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: getWidth() * 0.005,
+                                vertical: getHeight() * 0.008),
+                            child: provider.isLoading
+                                ? CircularProgressIndicator()
+                                : IconButton(
+                                    padding: EdgeInsets.zero,
+                                    style: ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                            Color.fromRGBO(70, 41, 242, 1))),
+                                    onPressed: () {
+                                      provider.loading();
+                                      socket.emit(
+                                          "sendMessage",
+                                          ChatForumModel(
+                                                  avatar: '',
+                                                  idChat: 0,
+                                                  idForum:
+                                                      widget.forumModel.idForum,
+                                                  idUser:
+                                                      widget.userModel.idUser,
+                                                  image: '',
+                                                  message:
+                                                      provider.etMessage.text,
+                                                  name: '',
+                                                  sendAt: '',
+                                                  type: 'text')
+                                              .toJSON());
+                                      provider.resetText();
+                                    },
+                                    icon: Icon(
+                                      Icons.send,
+                                      color: Colors.white,
+                                    )),
+                          )),
+                    );
+                  }),
                 ),
               ),
             ))
@@ -297,28 +325,167 @@ class ForumChatPage extends StatelessWidget {
   }
 }
 
-class ImageSenderWidget extends StatelessWidget {
-  const ImageSenderWidget({
-    super.key,
-  });
+class ImageReceiverWidget extends StatelessWidget {
+  final ChatForumModel chatForumModel;
+  const ImageReceiverWidget({super.key, required this.chatForumModel});
+  double getWidth() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+
+    double physicalWidth = view.physicalSize.width;
+
+    double devicePixelRatio = view.devicePixelRatio;
+
+    double screenWidth = physicalWidth / devicePixelRatio;
+    return screenWidth;
+  }
+
+  double getHeight() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+    double physicalHeight = view.physicalSize.height;
+
+    double devicePixelRatio = view.devicePixelRatio;
+    double screenHeight = physicalHeight / devicePixelRatio;
+    return screenHeight;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: getWidth(),
+      constraints: BoxConstraints(maxHeight: double.infinity, minHeight: 0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: getWidth() * 0.17,
+            constraints:
+                BoxConstraints(maxHeight: double.infinity, minHeight: 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: getWidth(),
+                  height: getHeight() * 0.06,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: chatForumModel.avatar == ''
+                              ? NetworkImage(
+                                  "https://images8.alphacoders.com/119/1196416.jpg")
+                              : NetworkImage(chatForumModel.avatar),
+                          fit: BoxFit.fill),
+                      color: Colors.greenAccent,
+                      shape: BoxShape.circle),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+              child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: getWidth() * 0.4,
+                  height: getHeight() * 0.03,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      chatForumModel.name,
+                      style: GoogleFonts.poppins(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: getWidth() * 0.4,
+                  height: getHeight() * 0.13,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(chatForumModel.image),
+                          fit: BoxFit.cover),
+                      color: Colors.grey,
+                      borderRadius:
+                          BorderRadius.only(topRight: Radius.circular(8))),
+                ),
+                Container(
+                  constraints: BoxConstraints(
+                      maxHeight: double.infinity,
+                      minHeight: 0,
+                      maxWidth: getWidth() * 0.4,
+                      minWidth: getWidth() * 0.4),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.only(bottomRight: Radius.circular(8))),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.008,
+                        horizontal: MediaQuery.of(context).size.width * 0.01),
+                    child: Text(chatForumModel.name),
+                  ),
+                ),
+                SizedBox(
+                  height: getHeight() * 0.001,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.01),
+                  child: Text(
+                    chatForumModel.sendAt,
+                    style:
+                        GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
+                  ),
+                )
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+}
+
+class ImageSenderWidget extends StatelessWidget {
+  final ChatForumModel chatForumModel;
+  const ImageSenderWidget({super.key, required this.chatForumModel});
+  double getWidth() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+
+    double physicalWidth = view.physicalSize.width;
+
+    double devicePixelRatio = view.devicePixelRatio;
+
+    double screenWidth = physicalWidth / devicePixelRatio;
+    return screenWidth;
+  }
+
+  double getHeight() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+    double physicalHeight = view.physicalSize.height;
+
+    double devicePixelRatio = view.devicePixelRatio;
+    double screenHeight = physicalHeight / devicePixelRatio;
+    return screenHeight;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: getWidth(),
       constraints: BoxConstraints(maxHeight: double.infinity, minHeight: 0),
       color: Colors.amberAccent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.15,
+            width: getWidth() * 0.5,
+            height: getHeight() * 0.15,
             decoration: BoxDecoration(
                 color: Colors.blueAccent,
                 image: DecorationImage(
-                    image: NetworkImage(
-                        "https://c4.wallpaperflare.com/wallpaper/578/135/704/video-game-arknights-amiya-arknights-hd-wallpaper-preview.jpg"),
+                    image: NetworkImage(chatForumModel.image),
                     fit: BoxFit.cover),
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(0),
@@ -327,7 +494,7 @@ class ImageSenderWidget extends StatelessWidget {
                     topLeft: Radius.circular(8))),
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: getWidth() * 0.5,
             constraints:
                 BoxConstraints(maxHeight: double.infinity, minHeight: 0),
             decoration: BoxDecoration(
@@ -335,19 +502,17 @@ class ImageSenderWidget extends StatelessWidget {
                 borderRadius:
                     BorderRadius.vertical(bottom: Radius.circular(8))),
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.01),
+              padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.01),
               child: Text(
-                "Halo Gaessss",
+                chatForumModel.message,
                 style: GoogleFonts.poppins(color: Colors.black),
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.02),
+            padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.02),
             child: Text(
-              "08.15 AM",
+              chatForumModel.sendAt,
               style: GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
             ),
           )
@@ -358,32 +523,52 @@ class ImageSenderWidget extends StatelessWidget {
 }
 
 class ReceiverWidget extends StatelessWidget {
-  const ReceiverWidget({
-    super.key,
-  });
+  final ChatForumModel chatForumModel;
+  const ReceiverWidget({super.key, required this.chatForumModel});
+  double getWidth() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+
+    double physicalWidth = view.physicalSize.width;
+
+    double devicePixelRatio = view.devicePixelRatio;
+
+    double screenWidth = physicalWidth / devicePixelRatio;
+    return screenWidth;
+  }
+
+  double getHeight() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+    double physicalHeight = view.physicalSize.height;
+
+    double devicePixelRatio = view.devicePixelRatio;
+    double screenHeight = physicalHeight / devicePixelRatio;
+    return screenHeight;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: getWidth(),
       constraints: BoxConstraints(maxHeight: double.infinity, minHeight: 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.17,
+            width: getWidth() * 0.17,
             constraints:
                 BoxConstraints(maxHeight: double.infinity, minHeight: 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.06,
+                  width: getWidth(),
+                  height: getHeight() * 0.06,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: NetworkImage(
-                              'https://images8.alphacoders.com/119/1196416.jpg'),
+                          image: chatForumModel.avatar == ''
+                              ? NetworkImage(
+                                  'https://images8.alphacoders.com/119/1196416.jpg')
+                              : NetworkImage(chatForumModel.avatar),
                           fit: BoxFit.fill),
                       color: Colors.greenAccent,
                       shape: BoxShape.circle),
@@ -392,19 +577,21 @@ class ReceiverWidget extends StatelessWidget {
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 0.4,
+            width: getWidth() * 0.4,
             constraints:
                 BoxConstraints(maxHeight: double.infinity, minHeight: 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.03,
+                  width: getWidth(),
+                  height: getHeight() * 0.03,
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      "Altera RM",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      chatForumModel.name,
                       style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 13,
@@ -415,8 +602,8 @@ class ReceiverWidget extends StatelessWidget {
                 Container(
                   constraints: BoxConstraints(
                       maxHeight: double.infinity,
-                      minHeight: MediaQuery.of(context).size.height * 0.04,
-                      maxWidth: MediaQuery.of(context).size.width * 0.4,
+                      minHeight: getHeight() * 0.04,
+                      maxWidth: getWidth() * 0.4,
                       minWidth: 0),
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -427,16 +614,15 @@ class ReceiverWidget extends StatelessWidget {
                           topRight: Radius.circular(8))),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: MediaQuery.of(context).size.height * 0.008,
-                        horizontal: MediaQuery.of(context).size.width * 0.01),
-                    child: Text("Halo gaes met malam sdsdsdsdsdsdsdsdsdsd"),
+                        vertical: getHeight() * 0.008,
+                        horizontal: getWidth() * 0.01),
+                    child: Text(chatForumModel.message),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.02),
+                  padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.01),
                   child: Text(
-                    "08.15 AM",
+                    chatForumModel.sendAt,
                     style:
                         GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
                   ),
@@ -451,14 +637,32 @@ class ReceiverWidget extends StatelessWidget {
 }
 
 class SenderForumWidget extends StatelessWidget {
-  const SenderForumWidget({
-    super.key,
-  });
+  final ChatForumModel chatForumModel;
+  const SenderForumWidget({super.key, required this.chatForumModel});
+  double getWidth() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+
+    double physicalWidth = view.physicalSize.width;
+
+    double devicePixelRatio = view.devicePixelRatio;
+
+    double screenWidth = physicalWidth / devicePixelRatio;
+    return screenWidth;
+  }
+
+  double getHeight() {
+    FlutterView view = PlatformDispatcher.instance.views.first;
+    double physicalHeight = view.physicalSize.height;
+
+    double devicePixelRatio = view.devicePixelRatio;
+    double screenHeight = physicalHeight / devicePixelRatio;
+    return screenHeight;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: getWidth(),
       constraints: BoxConstraints(maxHeight: double.infinity, minHeight: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -468,8 +672,8 @@ class SenderForumWidget extends StatelessWidget {
             child: Container(
               constraints: BoxConstraints(
                   maxHeight: double.infinity,
-                  minHeight: MediaQuery.of(context).size.height * 0.04,
-                  maxWidth: MediaQuery.of(context).size.width * 0.5,
+                  minHeight: getHeight() * 0.04,
+                  maxWidth: getWidth() * 0.5,
                   minWidth: 0),
               decoration: BoxDecoration(
                   color: Color.fromRGBO(70, 41, 242, 1),
@@ -479,10 +683,10 @@ class SenderForumWidget extends StatelessWidget {
                       topLeft: Radius.circular(8))),
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.008,
-                    horizontal: MediaQuery.of(context).size.width * 0.02),
+                    vertical: getHeight() * 0.008,
+                    horizontal: getWidth() * 0.02),
                 child: Text(
-                  "halo Coy",
+                  chatForumModel.message,
                   style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 13,
@@ -492,10 +696,9 @@ class SenderForumWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.02),
+            padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.02),
             child: Text(
-              "08.15 AM",
+              chatForumModel.sendAt,
               style: GoogleFonts.poppins(color: Colors.grey, fontSize: 12),
             ),
           )

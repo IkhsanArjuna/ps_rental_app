@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:ps_rental_app/models/forum_model.dart';
+import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/view/page/forum_chat_page.dart';
 
 class ForumDetailPage extends StatelessWidget {
@@ -136,26 +138,30 @@ class ForumDetailPage extends StatelessWidget {
       bottomSheet: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.08,
-        child: ElevatedButton(
-            style: ButtonStyle(
-                shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(12), bottom: Radius.circular(0)))),
-                backgroundColor: WidgetStatePropertyAll(Colors.blueAccent)),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ForumChatPage(forumModel: forumModel,),
-                  ));
-            },
-            child: Text(
-              "Mulai Chat",
-              style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18),
-            )),
+        child: Consumer<AuthProvider>(
+          builder: (context,provider,child) {
+            return ElevatedButton(
+                style: ButtonStyle(
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(12), bottom: Radius.circular(0)))),
+                    backgroundColor: WidgetStatePropertyAll(Colors.blueAccent)),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ForumChatPage(forumModel: forumModel,userModel: provider.userLoginNow!,),
+                      ));
+                },
+                child: Text(
+                  "Mulai Chat",
+                  style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18),
+                ));
+          }
+        ),
       ),
     );
   }
