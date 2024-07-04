@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class AuthData {
   Future<UserModel?> loginUser(String email, String password) async {
     UserModel? usermodel;
-
+    log("test");
     var response = await http.post(Uri.parse("${baseUrl}/person/login"),
         headers: {
           "Accept": "application/json",

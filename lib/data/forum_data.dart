@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:path/path.dart';
 import 'package:ps_rental_app/data/global_data.dart';
 import 'package:ps_rental_app/models/chat_forum_model.dart';
 import 'package:ps_rental_app/models/forum_model.dart';
@@ -38,6 +41,34 @@ class ForumData {
       return forumChat;
     } else {
       return forumChat;
+    }
+  }
+
+  Future<String> uploadImage(File fileImage) async {
+    Dio dio = Dio();
+    String imageURL = '';
+    try {
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(fileImage.path,
+            filename: fileImage.path.split('/').last)
+      });
+      var response = await dio.post(
+        "${baseUrl}/other/upload",
+        data: formData,
+        options: Options(contentType: 'multipart/form-data'),
+        onSendProgress: (count, total) {
+          log('${count},${total}');
+        },
+      );
+      if (response.statusCode == 200) {
+        imageURL = response.data['data']['url'];
+        return imageURL;
+      } else {
+        return imageURL;
+      }
+    } catch (e) {
+      log('Error: $e');
+      return imageURL;
     }
   }
 }

@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/chat_forum_provider.dart';
+import 'package:ps_rental_app/view/page/image_before_send_widget.dart';
+// ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -208,23 +210,29 @@ class _ForumChatPageState extends State<ForumChatPage> {
                                 child: Builder(builder: (context) {
                                   if (provider.chatAwal[index].idUser ==
                                       widget.userModel.idUser) {
-                                    if (provider.chatAwal[index].type == 'text') {
+                                    if (provider.chatAwal[index].type ==
+                                        'text') {
                                       return SenderForumWidget(
-                                        chatForumModel: provider.chatAwal[index],
+                                        chatForumModel:
+                                            provider.chatAwal[index],
                                       );
                                     } else {
                                       return ImageSenderWidget(
-                                        chatForumModel: provider.chatAwal[index],
+                                        chatForumModel:
+                                            provider.chatAwal[index],
                                       );
                                     }
                                   } else {
-                                    if (provider.chatAwal[index].type == 'text') {
+                                    if (provider.chatAwal[index].type ==
+                                        'text') {
                                       return ReceiverWidget(
-                                        chatForumModel: provider.chatAwal[index],
+                                        chatForumModel:
+                                            provider.chatAwal[index],
                                       );
                                     } else {
                                       return ImageReceiverWidget(
-                                        chatForumModel: provider.chatAwal[index],
+                                        chatForumModel:
+                                            provider.chatAwal[index],
                                       );
                                     }
                                   }
@@ -251,12 +259,30 @@ class _ForumChatPageState extends State<ForumChatPage> {
             Container(
               width: getWidth() * 0.13,
               height: getHeight(),
-              child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.image,
-                    color: Colors.white,
-                  )),
+              child: Consumer<ChatForumProvider>(
+                  builder: (context, provider, child) {
+                return IconButton(
+                    onPressed: () async {
+                      if (await provider.getImagePath()) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImageBeforeSendWidget(
+                                imageFile: provider.fileImage!,
+                                idForum: widget.forumModel.idForum,
+                                idUser: widget.userModel.idUser,
+                              ),
+                            ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Internal Error")));
+                      }
+                    },
+                    icon: Icon(
+                      Icons.image,
+                      color: Colors.white,
+                    ));
+              }),
             ),
             Expanded(
                 child: Padding(
@@ -475,7 +501,6 @@ class ImageSenderWidget extends StatelessWidget {
     return Container(
       width: getWidth(),
       constraints: BoxConstraints(maxHeight: double.infinity, minHeight: 0),
-      color: Colors.amberAccent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
