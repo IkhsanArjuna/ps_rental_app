@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
 import 'package:ps_rental_app/provider/chat_forum_provider.dart';
+import 'package:ps_rental_app/provider/cs_provider.dart';
 import 'view/page/onboarding_page.dart';
 
 void main() {
@@ -13,7 +14,8 @@ void main() {
     ChangeNotifierProvider(
       create: (context) => BottomNavProvider(),
     ),
-    ChangeNotifierProvider(create: (context) => ChatForumProvider(),)
+    ChangeNotifierProvider(create: (context) => ChatForumProvider()),
+    ChangeNotifierProvider(create: (context) => CsProvider(),)
   ], child: MyApp()));
 }
 
