@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ps_rental_app/data/cs_data.dart';
 import 'package:ps_rental_app/models/admin_model.dart';
 import 'package:ps_rental_app/provider/cs_provider.dart';
-import 'package:ps_rental_app/view/page/list_chat_page.dart';
+import 'package:ps_rental_app/view/page/customer_service/list_chat_page.dart';
 
 class ListAdminPage extends StatelessWidget {
   final int idUserNow;

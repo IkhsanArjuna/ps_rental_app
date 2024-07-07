@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ps_rental_app/view/page/list_item_page.dart';
+import 'package:ps_rental_app/view/page/item/list_item_page.dart';
 
 
 class MenuItemWidget extends StatelessWidget {

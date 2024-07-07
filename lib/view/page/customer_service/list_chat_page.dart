@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:ps_rental_app/data/cs_data.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/cs_provider.dart';
-import 'package:ps_rental_app/view/page/customer_chat_page.dart';
-import 'package:ps_rental_app/view/page/list_admin_page.dart';
+import 'package:ps_rental_app/view/page/customer_service/customer_chat_page.dart';
+import 'package:ps_rental_app/view/page/customer_service/list_admin_page.dart';
 
 class ListChatPage extends StatelessWidget {
   const ListChatPage({super.key});

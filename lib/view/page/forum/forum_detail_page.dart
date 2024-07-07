@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/models/forum_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
-import 'package:ps_rental_app/view/page/forum_chat_page.dart';
+import 'package:ps_rental_app/view/page/forum/forum_chat_page.dart';
 
 class ForumDetailPage extends StatelessWidget {
   final ForumModel forumModel;

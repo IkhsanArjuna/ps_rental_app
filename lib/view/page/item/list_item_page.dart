@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ps_rental_app/view/page/detail_item_page.dart';
+import 'package:ps_rental_app/view/page/detail/detail_item_page.dart';
 
 
 class ListItemPage extends StatelessWidget {

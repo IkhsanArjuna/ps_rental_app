@@ -4,8 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
-import 'package:ps_rental_app/view/page/list_chat_page.dart';
-import 'package:ps_rental_app/view/page/test_page.dart';
+import 'package:ps_rental_app/view/page/customer_service/list_chat_page.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -46,11 +45,7 @@ class _HomepageState extends State<Homepage> {
           IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TestPage(),
-                  ));
+              
             },
             icon: Icon(Icons.shopping_cart_outlined),
             color: Colors.white,

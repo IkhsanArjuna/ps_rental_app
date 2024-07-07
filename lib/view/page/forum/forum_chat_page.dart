@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/chat_forum_provider.dart';
-import 'package:ps_rental_app/view/page/image_before_send_widget.dart';
+import 'package:ps_rental_app/view/widget/chat_component/image_before_send_widget.dart';
 import 'package:ps_rental_app/view/widget/chat_component/image_receiver__widget.dart';
 import 'package:ps_rental_app/view/widget/chat_component/image_sender_widget.dart';
 import 'package:ps_rental_app/view/widget/chat_component/receiver_widget.dart';
