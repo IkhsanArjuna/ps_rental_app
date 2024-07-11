@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -239,18 +241,89 @@ class DetailItemPage extends StatelessWidget {
       ),
       bottomSheet: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height*0.08,
-        color: Colors.amber,
+        height: MediaQuery.of(context).size.height*0.06,
         child: Row(
           children: [
-            Container(
-        width: MediaQuery.of(context).size.width*0.2,
-        height: MediaQuery.of(context).size.height,
-        color: Colors.blue,
+            Padding(
+              padding:  EdgeInsets.symmetric(
+                 horizontal: MediaQuery.of(context).size.width * 0.01,
+              vertical: MediaQuery.of(context).size.height * 0.01,
+              ),
+              child: Container(
+                      width: MediaQuery.of(context).size.width*0.2,
+                      height: MediaQuery.of(context).size.height,
+                      color: Color.fromRGBO(14, 19, 31, 1),
+                      child: Center(
+                        child: IconButton(onPressed: () {},
+              icon: Icon(Icons.message_outlined),
+              color: Colors.white,),
+                      ),
               
+              
+              ),
+            ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.01,
+            vertical: MediaQuery.of(context).size.height * 0.01,
 
-            )
+          ),
+          child: Container(
+          width: MediaQuery.of(context).size.width*0.4,
+          height: MediaQuery.of(context).size.height,
+        
+          
+          child: ElevatedButton(
+          
+            style: ButtonStyle(
+              side: WidgetStatePropertyAll(BorderSide(color: Colors.blue,
+              width:2 )),
+              backgroundColor: WidgetStatePropertyAll(Color.fromRGBO(14, 19, 31, 1)),
+              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5),
+                )))
+            ),
+          onPressed: () {},
+           child: Text(
+            "Sewa Langsung",style: GoogleFonts.poppins
+            (fontSize: 12,color: Colors.blue),
+            
+           )),
+          
+          
+          
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding:  EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.01,
+              vertical: MediaQuery.of(context).size.height * 0.01,
+            ),
+            child: Container(
+          
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  side: WidgetStatePropertyAll(BorderSide(color: Colors.blue,
+              width:2 )),
+              backgroundColor: WidgetStatePropertyAll(Colors.blue),
+              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5),
+                )))
+                ),
+                
+                onPressed:(){}, 
+              child:Text(
+            "+Keranjang",style: GoogleFonts.poppins
+            (fontSize: 12,color: Colors.white),
+             )
+              )
+            ),
+          ),
+        )
+        
           ],
+
         ),
         
       ),
