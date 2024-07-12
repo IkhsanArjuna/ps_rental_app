@@ -6,7 +6,7 @@ class ItemModel {
   final String deskripsi;
   final int stock;
   final int price;
-  final int rating;
+  final dynamic rating;
 
   ItemModel(
       {required this.deskripsi,
@@ -25,7 +25,7 @@ class ItemModel {
         image: json['gambar_barang'] ?? '',
         name: json['nama_barang'] ?? '',
         price: json['harga_sewa'] ?? 0,
-        rating: json['rating'] ?? 0,
+        rating: json['rating'] ?? 0.0,
         stock: json['stock'] ?? 0,
         type: json['jenis_barang'] ?? '');
   }
