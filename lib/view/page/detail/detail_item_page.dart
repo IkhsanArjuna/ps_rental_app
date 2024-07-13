@@ -1,17 +1,36 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ps_rental_app/provider/converter.dart';
+import 'package:ps_rental_app/provider/single_product_payment_provider.dart';
+import 'package:ps_rental_app/view/page/detail/detail_payment_page.dart';
 
-class DetailItemPage extends StatelessWidget {
+class DetailItemPage extends StatefulWidget {
   const DetailItemPage({super.key});
+
+  @override
+  State<DetailItemPage> createState() => _DetailItemPageState();
+}
+
+class _DetailItemPageState extends State<DetailItemPage> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(14, 19, 31, 1),
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+            )),
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
@@ -39,7 +58,8 @@ class DetailItemPage extends StatelessWidget {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(
-                        'https://web.kominfo.go.id/sites/default/files/kominfo-dirjen-aptika-semuel-semmy-DRA-3.jpeg'))),
+                        'https://web.kominfo.go.id/sites/default/files/kominfo-dirjen-aptika-semuel-semmy-DRA-3.jpeg'),
+                    fit: BoxFit.fill)),
           ),
           Padding(
             padding: EdgeInsets.symmetric(
@@ -87,7 +107,7 @@ class DetailItemPage extends StatelessWidget {
                     color: Color.fromRGBO(14, 19, 31, 1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "Pilih Durasi: ",
@@ -105,27 +125,25 @@ class DetailItemPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        DurasiPinjam(
-                          name: "1D",
-                        ),
-                        DurasiPinjam(
-                          name: "3D",
-                        ),
-                        DurasiPinjam(
-                          name: "5D",
-                        ),
-                        DurasiPinjam(
-                          name: "1W",
-                        ),
-                      ],
-                    ),
-                  )
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      child: Consumer<SingelProductPaymentProvider>(
+                          builder: (context, provider, child) {
+                        return ListView.builder(
+                          itemCount: provider.durasi.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                                onTap: () {
+                                  provider.changeDuration(index);
+                                },
+                                child: DurasiPinjam(
+                                    isPicked: provider.durasi[index].isPicked,
+                                    name: provider.durasi[index].durasi));
+                          },
+                        );
+                      }))
                 ],
               ),
             ),
@@ -166,166 +184,315 @@ class DetailItemPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-
-                     children: [
-                      Container(
-
-                    width: MediaQuery.of(context).size.width*0.4,
-                    height: MediaQuery.of(context).size.height ,
-                    color: Color.fromRGBO(14, 19, 31, 1),
-                    child:  Text(
-                          "Zona ",
-                          style: GoogleFonts.poppins(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          height: MediaQuery.of(context).size.height,
+                          color: Color.fromRGBO(14, 19, 31, 1),
+                          child: Text(
+                            "Zona ",
+                            style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 13,),
-                        )
-,
-
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                                            height: MediaQuery.of(context).size.height ,
-                                            color: Color.fromRGBO(14, 19, 31, 1),
-                          child:  Text(
-                          "Playstation 5 ",
-                          style: GoogleFonts.poppins(
-                              color: Colors.blue,
-                              fontSize: 13,),
-                        ) 
-                          
+                              fontSize: 13,
+                            ),
+                          ),
                         ),
-                      )
-                      
-                     ],
+                        Expanded(
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height,
+                              color: Color.fromRGBO(14, 19, 31, 1),
+                              child: Text(
+                                "Playstation 5 ",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.blue,
+                                  fontSize: 13,
+                                ),
+                              )),
+                        )
+                      ],
                     ),
-                    
-
                   )
                 ],
               ),
             ),
           ),
           Padding(
-            padding:  EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.03,
               vertical: MediaQuery.of(context).size.height * 0.001,
             ),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height*0.03,
+              height: MediaQuery.of(context).size.height * 0.03,
               color: Color.fromRGBO(14, 19, 31, 1),
               child: Text(
-                          "Deskripsi Produk ",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ) ,
-              
+                "Deskripsi Produk ",
+                style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
-          Container(  
-             width: MediaQuery.of(context).size.width * 0.4,
-            constraints:
-                BoxConstraints(maxHeight: double.infinity, minHeight: 0),
-                child:Text(
-                          "Paket rental PS5 Ultimate Game Experience memberikan Anda kesempatan untuk menikmati berbagai game populer dengan satu paket lengkap. Dirancang untuk gamer yang ingin merasakan variasi permainan terbaik, paket ini mencakup tiga game top yang akan memberikan hiburan tanpa henti. Dengan durasi sewa yang fleksibel, Anda dapat menikmati game-game ini dengan nyaman sesuai dengan jadwal Anda.Fitur Paket:Konsol PlayStation 5 (PS5)Konsol gaming terbaru dari Sony dengan performa superior.Mendukung resolusi hingga 4K dengan frame rate tinggi.Tiga Game PopulerSpider-Man: Miles MoralesJelajahi kota New York sebagai Spider-Man baru dengan kekuatan dan cerita unik.Grafis dan animasi yang memukau, serta gameplay yang dinamis.Horizon Forbidden WestPetualangan epik di dunia post-apocalyptic dengan karakter utama Aloy.Dunia terbuka yang luas dengan berbagai misi dan aktivitas.FIFA 23Pengalaman bermain sepak bola yang realistis dengan berbagai mode permainan.Update terbaru tim, pemain, dan fitur-fitur inovatif dalam permainan.Durasi Sewa FleksibelTersedia pilihan durasi sewa mulai dari 3 hari, 1 minggu, hingga 2 minggu.Durasi sewa yang lebih panjang memberikan nilai lebih dengan biaya yang lebih ekonomis.",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 15),
-                        ), 
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.03,
+              vertical: MediaQuery.of(context).size.height * 0.001,
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.4,
+              constraints:
+                  BoxConstraints(maxHeight: double.infinity, minHeight: 0),
+              child: Text(
+                "Paket rental PS5 Ultimate Game Experience memberikan Anda kesempatan untuk menikmati berbagai game populer dengan satu paket lengkap",
+                style: GoogleFonts.poppins(color: Colors.white, fontSize: 15),
+              ),
+            ),
           )
         ],
-
       ),
       bottomSheet: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height*0.06,
+        height: MediaQuery.of(context).size.height * 0.06,
         child: Row(
           children: [
             Padding(
-              padding:  EdgeInsets.symmetric(
-                 horizontal: MediaQuery.of(context).size.width * 0.01,
-              vertical: MediaQuery.of(context).size.height * 0.01,
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.01,
+                vertical: MediaQuery.of(context).size.height * 0.01,
               ),
               child: Container(
-                      width: MediaQuery.of(context).size.width*0.2,
-                      height: MediaQuery.of(context).size.height,
-                      color: Color.fromRGBO(14, 19, 31, 1),
-                      child: Center(
-                        child: IconButton(onPressed: () {},
-              icon: Icon(Icons.message_outlined),
-              color: Colors.white,),
-                      ),
-              
-              
+                width: MediaQuery.of(context).size.width * 0.15,
+                height: MediaQuery.of(context).size.height,
+                color: Color.fromRGBO(14, 19, 31, 1),
+                child: Center(
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {},
+                    icon: Icon(Icons.message_outlined),
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.01,
-            vertical: MediaQuery.of(context).size.height * 0.01,
-
-          ),
-          child: Container(
-          width: MediaQuery.of(context).size.width*0.4,
-          height: MediaQuery.of(context).size.height,
-        
-          
-          child: ElevatedButton(
-          
-            style: ButtonStyle(
-              side: WidgetStatePropertyAll(BorderSide(color: Colors.blue,
-              width:2 )),
-              backgroundColor: WidgetStatePropertyAll(Color.fromRGBO(14, 19, 31, 1)),
-              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5),
-                )))
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.01,
+                vertical: MediaQuery.of(context).size.height * 0.01,
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.4,
+                height: MediaQuery.of(context).size.height,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        side: WidgetStatePropertyAll(
+                            BorderSide(color: Colors.blue, width: 2)),
+                        backgroundColor: WidgetStatePropertyAll(
+                            Color.fromRGBO(14, 19, 31, 1)),
+                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        )))),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(days: 365),
+                          content: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.06,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          ScaffoldMessenger.of(context)
+                                              .clearSnackBars();
+                                        },
+                                        icon: Icon(
+                                          Icons.close,
+                                          color: Colors.grey,
+                                        )),
+                                    Text(
+                                      "Varian Product",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.01,
+                                          vertical: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.005),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(12)),
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Expanded(
+                                        child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.01,
+                                          vertical: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.005),
+                                      child: Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "1 Day",
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.grey),
+                                            ),
+                                            Text(
+                                              "Stock : 1",
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              CurrencyConverter.convertToIdr(
+                                                  250000, 0),
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.07,
+                                  child: Consumer<SingelProductPaymentProvider>(
+                                      builder: (context, provider, child) {
+                                    return ListView.builder(
+                                      itemCount: provider.durasi.length,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                            onTap: () {
+                                              provider.changeDuration(index);
+                                            },
+                                            child: DurasiPinjam(
+                                                isPicked: provider
+                                                    .durasi[index].isPicked,
+                                                name: provider
+                                                    .durasi[index].durasi));
+                                      },
+                                    );
+                                  })),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.06,
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        overlayColor:
+                                            WidgetStatePropertyAll(Colors.grey),
+                                        shape: WidgetStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12)))),
+                                        backgroundColor: WidgetStatePropertyAll(
+                                            Colors.black)),
+                                    onPressed: () {
+                                      ScaffoldMessenger.of(context)
+                                          .clearSnackBars();
+                                      Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) {
+                                          return DetailPaymentPage();
+                                        },
+                                      ));
+                                    },
+                                    child: Text(
+                                      "Sewa Langsung",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white),
+                                    )),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                            ],
+                          )));
+                    },
+                    child: Text(
+                      "Sewa Langsung",
+                      style:
+                          GoogleFonts.poppins(fontSize: 12, color: Colors.blue),
+                    )),
+              ),
             ),
-          onPressed: () {},
-           child: Text(
-            "Sewa Langsung",style: GoogleFonts.poppins
-            (fontSize: 12,color: Colors.blue),
-            
-           )),
-          
-          
-          
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding:  EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.01,
-              vertical: MediaQuery.of(context).size.height * 0.01,
-            ),
-            child: Container(
-          
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  side: WidgetStatePropertyAll(BorderSide(color: Colors.blue,
-              width:2 )),
-              backgroundColor: WidgetStatePropertyAll(Colors.blue),
-              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5),
-                )))
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.01,
+                  vertical: MediaQuery.of(context).size.height * 0.01,
                 ),
-                
-                onPressed:(){}, 
-              child:Text(
-            "+Keranjang",style: GoogleFonts.poppins
-            (fontSize: 12,color: Colors.white),
-             )
-              )
-            ),
-          ),
-        )
-        
+                child: Container(
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            side: WidgetStatePropertyAll(
+                                BorderSide(color: Colors.blue, width: 2)),
+                            backgroundColor:
+                                WidgetStatePropertyAll(Colors.blue),
+                            shape:
+                                WidgetStatePropertyAll(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            )))),
+                        onPressed: () {},
+                        child: Text(
+                          "+Keranjang",
+                          style: GoogleFonts.poppins(
+                              fontSize: 12, color: Colors.white),
+                        ))),
+              ),
+            )
           ],
-
         ),
-        
       ),
     );
   }
@@ -333,8 +500,9 @@ class DetailItemPage extends StatelessWidget {
 
 class DurasiPinjam extends StatelessWidget {
   final String name;
+  final bool isPicked;
 
-  const DurasiPinjam({super.key, required this.name});
+  const DurasiPinjam({super.key, required this.name, required this.isPicked});
 
   @override
   Widget build(BuildContext context) {
@@ -347,13 +515,15 @@ class DurasiPinjam extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.13,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-              color: Color.fromRGBO(217, 217, 217, 1),
+              color: isPicked
+                  ? Colors.blueAccent
+                  : Color.fromRGBO(217, 217, 217, 1),
               borderRadius: BorderRadius.all(Radius.circular(15))),
           child: Center(
             child: Text(
               name,
               style: GoogleFonts.poppins(
-                  color: Colors.black,
+                  color: isPicked ? Colors.white : Colors.black,
                   fontSize: 12,
                   fontWeight: FontWeight.bold),
             ),
