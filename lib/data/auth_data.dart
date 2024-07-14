@@ -5,10 +5,10 @@ import 'package:ps_rental_app/data/global_data.dart';
 import 'package:ps_rental_app/models/user_model.dart';
 import 'package:http/http.dart' as http;
 
+
 class AuthData {
-  Future<UserModel?> loginUser(String email, String password) async {
+  Future<dynamic> loginUser(String email, String password) async {
     UserModel? usermodel;
-    log("test");
     var response = await http.post(Uri.parse("${baseUrl}/person/login"),
         headers: {
           "Accept": "application/json",
@@ -18,8 +18,9 @@ class AuthData {
     log(response.statusCode.toString());
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
+      
       usermodel = UserModel.getDataFromJSON(jsonData['data']);
-      return usermodel;
+      return jsonData;
     } else {
       return usermodel;
     }

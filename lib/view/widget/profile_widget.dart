@@ -1,15 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/data/auth_data.dart';
 import 'package:ps_rental_app/models/user_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
+import 'package:ps_rental_app/view/page/auth/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
+
+  @override
+  State<ProfileWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  late SharedPreferences preferences;
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreference();
+  }
+
+  void initSharedPreference() async {
+    preferences = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,56 +103,73 @@ class ProfileWidget extends StatelessWidget {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                            content:
-                                                            Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                      content: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                  "Profile Photos ",
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        24,
+                                                                  )),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {},
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ))
+                                                            ],
+                                                          ),
+                                                          Container(
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.1,
+                                                            color: Colors.amber,
+                                                            child: Row(
                                                               children: [
-                                                                Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                  children: [
-                                                                    Text("Profile Photos ",
-                                                                    style: GoogleFonts.poppins(
-                                                                    color: Colors.white,
-                                                                    fontSize: 24,)),
-                                                                    IconButton(onPressed: (){}, icon:Icon(Icons.delete,color: Colors.white,))
-                                                                  ],
-                                                                ),
-                                              
-                                                
-                                    Container(
-                                    width:MediaQuery.of(context).size.width ,
-                                    height: MediaQuery.of(context).size.height *0.1,
-                                    color: Colors.amber,
-                                    child: 
-                                    Row(
-                                    children: [
-                                      Container(
-                                        width:MediaQuery.of(context).size.width*0.15 ,
-                                    height: MediaQuery.of(context).size.height *0.8,
-                                    color: Colors.purple,
-                                    child: 
-                                    Column(
-                                      children: [
-                                        
-                                      ],
-                                    ),
-                                      )
-                                     
-                                      
-                                    ],
-
-                                    ),
-
-                                                    
-
-                                                  )
-                                                
-                                              
+                                                                Container(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.15,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.8,
+                                                                  color: Colors
+                                                                      .purple,
+                                                                  child: Column(
+                                                                    children: [],
+                                                                  ),
+                                                                )
                                                               ],
-                                                            
                                                             ),
-                                                            
-                                                                ));
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ));
                                                   },
                                                   icon: Icon(
                                                     Icons.camera_alt_outlined,
@@ -225,10 +257,19 @@ class ProfileWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Logout ",
-                              style: GoogleFonts.poppins(
-                                color: Colors.blue,
-                                fontSize: 20,
+                          TextButton(
+                              onPressed: () {
+                                preferences.setString('token', '');
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage(),
+                                    ));
+                              },
+                              child: Text(
+                                "Logout",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.blueAccent),
                               ))
                         ],
                       ),

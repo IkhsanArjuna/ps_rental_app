@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:path/path.dart';
 import 'package:ps_rental_app/data/global_data.dart';
 import 'package:ps_rental_app/models/chat_forum_model.dart';
 import 'package:ps_rental_app/models/forum_model.dart';

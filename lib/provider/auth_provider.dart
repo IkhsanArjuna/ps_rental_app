@@ -13,19 +13,14 @@ class AuthProvider extends ChangeNotifier {
   bool loginIsLoading = false;
   UserModel? userLoginNow;
 
-  Future<bool> loginUser() async {
-    loginIsLoading = true;
-    notifyListeners();
-    UserModel? data =
-        await AuthData().loginUser(etEmailLogin.text, etPasswordLogin.text);
-    if (data != null) {
-      userLoginNow = data;
-      loginIsLoading = false;
-      notifyListeners();
+  
+
+  Future<bool> saveUserNow(int idUser) async {
+    UserModel? userModel = await AuthData().getSingleUser(idUser);
+    if (userModel != null) {
+      userLoginNow = userModel;
       return true;
     } else {
-      loginIsLoading = false;
-      notifyListeners();
       return false;
     }
   }

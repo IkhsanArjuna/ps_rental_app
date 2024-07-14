@@ -8,6 +8,7 @@ import 'package:ps_rental_app/models/item_model.dart';
 class CartProvider extends ChangeNotifier {
   List<CartItemModel> cartList = [];
   int totalPrice = 0;
+  bool isAll = false;
   List<CartItemModel> pickedCart = [];
   List<ItemModel> itemDummy = [
     ItemModel(
@@ -54,12 +55,13 @@ class CartProvider extends ChangeNotifier {
         price: 9000,
         rating: 3,
         stock: 9,
-        type: 'PS4'),
+        type: 'PS3'),
   ];
 
   void addToCart(ItemModel newItem) {
     if (cartList.isEmpty) {
       cartList.add(CartItemModel(
+          isHeader: false,
           deskripsi: newItem.deskripsi,
           idItem: newItem.idItem,
           image: newItem.image,
@@ -73,12 +75,11 @@ class CartProvider extends ChangeNotifier {
     } else {
       for (var i = 0; i < cartList.length; i++) {
         if (newItem.idItem == cartList[i].idItem) {
-          log(cartList[i].idItem.toString());
-          log(newItem.idItem.toString());
           cartList[i].quantity += 1;
           break;
         } else if (i + 1 >= cartList.length) {
           cartList.add(CartItemModel(
+              isHeader: false,
               deskripsi: newItem.deskripsi,
               idItem: newItem.idItem,
               image: newItem.image,
@@ -95,6 +96,59 @@ class CartProvider extends ChangeNotifier {
     }
     Fluttertoast.showToast(msg: "Item Add To Cart");
     notifyListeners();
+  }
+
+  void clearCartList() {
+    for (var i = 0; i < cartList.length; i++) {
+      if (cartList[i].isHeader) {
+        cartList.removeAt(i);
+      }
+    }
+  }
+
+  void sortingCart() {
+    cartList.sort(
+      (a, b) => a.type.compareTo(b.type),
+    );
+    List<CartItemModel> listTemp = [];
+    String temp = '';
+    for (var element in cartList) {
+      log(element.type);
+      if (temp == '') {
+        listTemp.add(CartItemModel(
+            deskripsi: '',
+            idItem: 0,
+            isHeader: true,
+            image: '',
+            quantity: 0,
+            isPicked: false,
+            name: element.type,
+            price: 0,
+            rating: 0,
+            stock: 0,
+            type: ''));
+        temp = element.type;
+      }
+      if (element.type == temp) {
+        listTemp.add(element);
+      } else {
+        listTemp.add(CartItemModel(
+            deskripsi: '',
+            idItem: 0,
+            isHeader: true,
+            image: '',
+            quantity: 0,
+            isPicked: false,
+            name: element.type,
+            price: 0,
+            rating: 0,
+            stock: 0,
+            type: ''));
+        temp = element.type;
+        listTemp.add(element);
+      }
+    }
+    cartList = listTemp;
   }
 
   void incrementQuantity(int index) {
@@ -123,13 +177,62 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
+  void deleteItem(int index) {
+    cartList.removeAt(index);
+    calculatedPrice();
+    notifyListeners();
+  }
+
+  void checkAllItem(bool newValue) {
+    if (newValue) {
+      isAll = newValue;
+      for (var element in cartList) {
+        if (element.isPicked == false) {
+          pickedCart.add(element);
+          element.isPicked = true;
+          totalPrice += (element.price * element.quantity);
+        }
+      }
+    } else {
+      isAll = newValue;
+      pickedCart = [];
+      totalPrice = 0;
+      for (var element in cartList) {
+        element.isPicked = false;
+      }
+    }
+
+    notifyListeners();
+  }
+
+  void bannerCheckup(String name, int index, bool newValue) {
+    if (newValue) {
+      cartList[index].isPicked = newValue;
+    for (var element in cartList) {
+      if (element.type == name) {
+        element.isPicked = true;
+      }
+    }
+    } else {
+      cartList[index].isPicked = newValue;
+      for (var element in cartList) {
+      if (element.type == name) {
+        element.isPicked = false;
+      }
+    }
+    }
+   
+    calculatedPrice();
+    notifyListeners();
+  }
+
   void calculatedPrice() {
     pickedCart = [];
     totalPrice = 0;
     for (var element in cartList) {
       if (element.isPicked) {
         pickedCart.add(element);
-        totalPrice += element.price;
+        totalPrice += (element.price * element.quantity);
       }
     }
   }

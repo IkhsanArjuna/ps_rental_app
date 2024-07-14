@@ -1,14 +1,36 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
+import 'package:ps_rental_app/data/global_data.dart';
+import 'package:ps_rental_app/models/user_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/view/page/main/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'register_page.dart';
+import 'package:http/http.dart' as http;
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late SharedPreferences preferences;
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreference();
+  }
+
+  void initSharedPreference() async {
+    preferences = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,22 +216,30 @@ class LoginPage extends StatelessWidget {
                               backgroundColor: WidgetStatePropertyAll(
                                   Color.fromRGBO(47, 128, 237, 1))),
                           onPressed: () async {
-                            await provider.loginUser().then(
-                              (value) {
-                                if (value) {
-                                  Navigator.pushReplacement(context,
-                                      MaterialPageRoute(
-                                    builder: (context) {
-                                      return Homepage();
-                                    },
+                            var response = await http.post(
+                                Uri.parse("${baseUrl}/person/login"),
+                                headers: {
+                                  "Accept": "application/json",
+                                  "content-type": "application/json",
+                                },
+                                body: jsonEncode({
+                                  "email": provider.etEmailLogin.text,
+                                  "password": provider.etPasswordLogin.text
+                                }));
+                            if (response.statusCode == 200) {
+                              var jsonData = jsonDecode(response.body);
+                              provider.userLoginNow =
+                                  UserModel.getDataFromJSON(jsonData['data']);
+                              preferences.setString('token', jsonData['token']);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Homepage(),
                                   ));
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text("Internal Error")));
-                                }
-                              },
-                            );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Internal Error")));
+                            }
                           },
                           child: Text(
                             "Login",

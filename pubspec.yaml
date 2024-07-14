@@ -47,6 +47,8 @@ dependencies:
   dio: ^5.5.0
   mime: ^1.0.0
   fluttertoast: ^8.2.6
+  shared_preferences: ^2.2.3
+  jwt_decoder: ^2.0.1
 
 
 dev_dependencies:
