@@ -28,25 +28,14 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         actions: [
-          Consumer<BottomNavProvider>(
-            builder: (context, value, child) {
-              if (value.index == 1) {
-                return IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {},
-                  icon: Icon(Icons.search),
-                  color: Colors.white,
-                );
-              } else {
-                return Container();
-              }
-            },
+          IconButton(onPressed:() {}, icon: Icon(Icons.search),
+          color: Colors.white,
           ),
+          
           IconButton(
+
             padding: EdgeInsets.zero,
-            onPressed: () {
-              
-            },
+            onPressed: () { },
             icon: Icon(Icons.shopping_cart_outlined),
             color: Colors.white,
           ),
