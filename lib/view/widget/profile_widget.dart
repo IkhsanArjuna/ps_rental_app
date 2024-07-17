@@ -216,7 +216,21 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                                                                     height: MediaQuery.of(context).size.height * 0.06,
                                                                                     decoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
                                                                                     child: IconButton(
-                                                                                        onPressed: () {},
+                                                                                        onPressed: () async{
+                                                                                          if (await provider.getImagePath(true)) {
+                                                                                            if (await provider.editProfileImage()) {
+                                                                                              await context.read<AuthProvider>().saveUserNow(provider.userModel!.idUser);
+                                                                                              Fluttertoast.showToast(msg: "Update Success");
+                                                                                              ScaffoldMessenger.of(context).clearSnackBars();
+                                                                                            } else {
+                                                                                              Fluttertoast.showToast(msg: "Error");
+                                                                                              ScaffoldMessenger.of(context).clearSnackBars();
+                                                                                            }
+                                                                                          } else {
+                                                                                            Fluttertoast.showToast(msg: "Canceled");
+                                                                                            ScaffoldMessenger.of(context).clearSnackBars();
+                                                                                          }
+                                                                                        },
                                                                                         icon: Icon(
                                                                                           Icons.camera_alt_outlined,
                                                                                           size: 28,

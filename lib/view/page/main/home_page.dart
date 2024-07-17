@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
 import 'package:ps_rental_app/provider/edit_profile_provider.dart';
 import 'package:ps_rental_app/view/page/customer_service/list_chat_page.dart';
