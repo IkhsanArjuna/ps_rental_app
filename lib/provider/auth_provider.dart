@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ps_rental_app/data/auth_data.dart';
 import 'package:ps_rental_app/models/user_model.dart';
 
@@ -9,11 +10,10 @@ class AuthProvider extends ChangeNotifier {
 
   TextEditingController etEmailLogin = TextEditingController();
   TextEditingController etPasswordLogin = TextEditingController();
+
   bool registerIsLoading = false;
   bool loginIsLoading = false;
   UserModel? userLoginNow;
-
-  
 
   Future<bool> saveUserNow(int idUser) async {
     UserModel? userModel = await AuthData().getSingleUser(idUser);
@@ -24,6 +24,8 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
   }
+
+
 
   Future<bool> registerUser() async {
     registerIsLoading = true;

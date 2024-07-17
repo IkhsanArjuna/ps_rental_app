@@ -1,8 +1,8 @@
 class UserModel {
   final int idUser;
-  final String name;
+  String name;
   final String email;
-  final String avatar;
+  String avatar;
   final String role;
   final int rentCount;
   final int bookmarkCount;

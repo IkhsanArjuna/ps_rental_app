@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:ps_rental_app/data/global_data.dart';
 import 'package:ps_rental_app/models/user_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
+import 'package:ps_rental_app/provider/edit_profile_provider.dart';
 import 'package:ps_rental_app/view/page/main/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'register_page.dart';
@@ -230,6 +231,11 @@ class _LoginPageState extends State<LoginPage> {
                               var jsonData = jsonDecode(response.body);
                               provider.userLoginNow =
                                   UserModel.getDataFromJSON(jsonData['data']);
+                              context
+                                  .read<EditProfileProvider>()
+                                  .saveInformationUser(
+                                      UserModel.getDataFromJSON(
+                                          jsonData['data']));
                               preferences.setString('token', jsonData['token']);
                               Navigator.pushReplacement(
                                   context,

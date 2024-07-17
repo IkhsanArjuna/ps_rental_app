@@ -4,6 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
+import 'package:ps_rental_app/provider/edit_profile_provider.dart';
 import 'package:ps_rental_app/view/page/customer_service/list_chat_page.dart';
 
 class Homepage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _HomepageState extends State<Homepage> {
           child: Container(
             width: MediaQuery.of(context).size.width * 0.2,
             height: MediaQuery.of(context).size.height,
-            child: Consumer<AuthProvider>(builder: (context, provider, child) {
+            child: Consumer<EditProfileProvider>(builder: (context, provider, child) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -69,10 +70,10 @@ class _HomepageState extends State<Homepage> {
                     "Selamat Datang",
                     style: GoogleFonts.poppins(color: Colors.white),
                   ),
-                  provider.userLoginNow == null
+                  provider.userModel == null
                       ? Text("Auth Error")
                       : Text(
-                          provider.userLoginNow!.name,
+                          provider.userModel!.name,
                           style: GoogleFonts.poppins(color: Colors.white),
                         ),
                 ],

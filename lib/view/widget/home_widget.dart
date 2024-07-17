@@ -138,7 +138,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.32,
-            color: Colors.blue,
             child: Column(
               children: [
                 Container(

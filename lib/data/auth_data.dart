@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:ps_rental_app/data/global_data.dart';
 import 'package:ps_rental_app/models/user_model.dart';
 import 'package:http/http.dart' as http;
-
 
 class AuthData {
   Future<dynamic> loginUser(String email, String password) async {
@@ -18,7 +18,7 @@ class AuthData {
     log(response.statusCode.toString());
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
-      
+
       usermodel = UserModel.getDataFromJSON(jsonData['data']);
       return jsonData;
     } else {
@@ -57,6 +57,49 @@ class AuthData {
       return usermodel;
     } else {
       return usermodel;
+    }
+  }
+
+  Future<bool> updateUser(int idUser, String name, String image) async {
+    if (image == '') {
+      var response = await http.put(
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json",
+          },
+          Uri.parse("${baseUrl}/person/${idUser}"),
+          body: jsonEncode({"name": name}));
+      log(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+    Dio dio = Dio();
+    try {
+      FormData formData = FormData.fromMap({
+        "name" : name,
+        "image": await MultipartFile.fromFile(image,
+            filename: image.split('/').last)
+      });
+      var response = await dio.put(
+        "${baseUrl}/person/${idUser}",
+        data: formData,
+        options: Options(contentType: 'multipart/form-data'),
+        onSendProgress: (count, total) {
+          log('${count},${total}');
+        },
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      log('Error: $e');
+      return false;
+    }
     }
   }
 }
