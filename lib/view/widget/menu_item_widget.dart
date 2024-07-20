@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ps_rental_app/view/page/item/list_item_page.dart';
 
-
 class MenuItemWidget extends StatelessWidget {
   final String name;
+  final String filter;
 
-  const MenuItemWidget({super.key, required this.name});
+  const MenuItemWidget({super.key, required this.name,required this.filter});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,9 @@ class MenuItemWidget extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ListItemPage(),
+                builder: (context) => ListItemPage(
+                  filter: filter,
+                ),
               ));
         },
         child: Container(

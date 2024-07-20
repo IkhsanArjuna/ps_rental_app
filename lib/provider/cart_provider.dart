@@ -2,61 +2,58 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:ps_rental_app/models/cart_item_model.dart';
+import 'package:ps_rental_app/models/duration_model.dart';
 import 'package:ps_rental_app/models/item_model.dart';
+import 'package:ps_rental_app/models/payment_model.dart';
 
 class CartProvider extends ChangeNotifier {
   List<CartItemModel> cartList = [];
   int totalPrice = 0;
   bool isAll = false;
   List<CartItemModel> pickedCart = [];
-  List<ItemModel> itemDummy = [
-    ItemModel(
-        deskripsi: "Test Dummy",
-        idItem: 1,
-        image: '',
-        name: "Dummy Ps 1",
-        price: 5000,
-        rating: 3,
-        stock: 10,
-        type: 'PS4'),
-    ItemModel(
-        deskripsi: "Test Dummy",
-        idItem: 2,
-        image: '',
-        name: "Dummy Ps 2",
-        price: 6000,
-        rating: 4.5,
-        stock: 15,
-        type: 'PS4'),
-    ItemModel(
-        deskripsi: "Test Dummy",
-        idItem: 3,
-        image: '',
-        name: "Dummy Ps 3",
-        price: 7000,
-        rating: 3,
-        stock: 5,
-        type: 'PS4'),
-    ItemModel(
-        deskripsi: "Test Dummy",
-        idItem: 4,
-        image: '',
-        name: "Dummy Ps 4",
-        price: 8000,
-        rating: 3,
-        stock: 7,
-        type: 'PS4'),
-    ItemModel(
-        deskripsi: "Test Dummy",
-        idItem: 5,
-        image: '',
-        name: "Dummy Ps 5",
-        price: 9000,
-        rating: 3,
-        stock: 9,
-        type: 'PS3'),
+
+  List<DurationModel> durasi = [
+    DurationModel(durasi: "1D", value: 1, isPicked: true),
+    DurationModel(durasi: "3D", value: 3, isPicked: false),
+    DurationModel(durasi: "5D", value: 5, isPicked: false),
+    DurationModel(durasi: "1W", value: 7, isPicked: false)
   ];
+
+  DurationModel pickedDuration =
+      DurationModel(durasi: "1D", value: 1, isPicked: true);
+
+  void changeDuration(int index) {
+    pickedDuration = durasi[index];
+    DateTime dateTime =
+        DateTime.now().add(Duration(days: pickedDuration.value));
+
+    for (var element in durasi) {
+      element.isPicked = false;
+    }
+    durasi[index].isPicked = true;
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    String dateFormatTime = dateFormat.format(dateTime);
+    notifyListeners();
+  }
+
+  String pickDuration(DurationModel durasi) {
+    DateTime dateTime = DateTime.now().add(Duration(days: durasi.value));
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    String dateFormatTime = dateFormat.format(dateTime);
+    return dateFormatTime;
+  }
+
+  int pickedItemLenght() {
+    int lenghts = 0;
+    for (var element in pickedCart) {
+      if (!element.isHeader) {
+        lenghts += 1;
+      }
+    }
+    return lenghts;
+  }
 
   void addToCart(ItemModel newItem) {
     if (cartList.isEmpty) {
@@ -208,20 +205,20 @@ class CartProvider extends ChangeNotifier {
   void bannerCheckup(String name, int index, bool newValue) {
     if (newValue) {
       cartList[index].isPicked = newValue;
-    for (var element in cartList) {
-      if (element.type == name) {
-        element.isPicked = true;
+      for (var element in cartList) {
+        if (element.type == name) {
+          element.isPicked = true;
+        }
       }
-    }
     } else {
       cartList[index].isPicked = newValue;
       for (var element in cartList) {
-      if (element.type == name) {
-        element.isPicked = false;
+        if (element.type == name) {
+          element.isPicked = false;
+        }
       }
     }
-    }
-   
+
     calculatedPrice();
     notifyListeners();
   }
@@ -235,5 +232,15 @@ class CartProvider extends ChangeNotifier {
         totalPrice += (element.price * element.quantity);
       }
     }
+  }
+
+  List<CartItemModel> toPaymentDetail(int idUser) {
+    List<CartItemModel> fixItem = [];
+    for (var element in pickedCart) {
+      if (!element.isHeader) {
+        fixItem.add(element);
+      }
+    }
+    return fixItem;
   }
 }

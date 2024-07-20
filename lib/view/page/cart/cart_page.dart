@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/cart_provider.dart';
 import 'package:ps_rental_app/provider/converter.dart';
+import 'package:ps_rental_app/view/page/detail/detail_item_page.dart';
+import 'package:ps_rental_app/view/page/detail/detail_payment_page.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -215,9 +218,142 @@ class _CartPageState extends State<CartPage> {
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8))))),
-                            onPressed: () {},
+                            onPressed: () {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                      duration: Duration(days: 365),
+                                      content: Column(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.06,
+                                            child: Row(
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .clearSnackBars();
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.close,
+                                                      color: Colors.grey,
+                                                    )),
+                                                Text(
+                                                  "Pilih Durasi",
+                                                  style: GoogleFonts.poppins(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.01,
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.07,
+                                              child: Consumer<CartProvider>(
+                                                  builder: (context, provider,
+                                                      child) {
+                                                return ListView.builder(
+                                                  itemCount:
+                                                      provider.durasi.length,
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return GestureDetector(
+                                                        onTap: () {
+                                                          provider
+                                                              .changeDuration(
+                                                                  index);
+                                                        },
+                                                        child: DurasiPinjam(
+                                                            isPicked: provider
+                                                                .durasi[index]
+                                                                .isPicked,
+                                                            name: provider
+                                                                .durasi[index]
+                                                                .durasi));
+                                                  },
+                                                );
+                                              })),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.01,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.06,
+                                            child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                    overlayColor:
+                                                        WidgetStatePropertyAll(
+                                                            Colors.grey),
+                                                    shape: WidgetStatePropertyAll(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        12)))),
+                                                    backgroundColor:
+                                                        WidgetStatePropertyAll(
+                                                            Colors.black)),
+                                                onPressed: () {
+                                                  ScaffoldMessenger.of(context)
+                                                      .clearSnackBars();
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return DetailPaymentPage(
+                                                        durasi: provider.pickedDuration,
+                                                        paymentModel: provider.toPaymentDetail(context.read<AuthProvider>().userLoginNow!.idUser),
+                                                      );
+                                                    },
+                                                  ));
+                                                },
+                                                child: Text(
+                                                  "Sewa Langsung",
+                                                  style: GoogleFonts.poppins(
+                                                      color: Colors.white),
+                                                )),
+                                          ),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.01,
+                                          ),
+                                        ],
+                                      )));
+                            },
                             child: Text(
-                              "Sewa (${provider.pickedCart.length})",
+                              "Sewa (${provider.pickedItemLenght()})",
                               style: GoogleFonts.poppins(
                                   color: Colors.white, fontSize: 12),
                             )),

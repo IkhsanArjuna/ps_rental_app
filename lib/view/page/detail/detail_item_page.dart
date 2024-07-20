@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:ps_rental_app/models/duration_model.dart';
+import 'package:ps_rental_app/models/payment_model.dart';
+import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/converter.dart';
 import 'package:ps_rental_app/provider/single_product_payment_provider.dart';
 import 'package:ps_rental_app/view/page/detail/detail_payment_page.dart';
@@ -505,7 +508,10 @@ class _DetailItemPageState extends State<DetailItemPage> {
                                           .clearSnackBars();
                                       Navigator.push(context, MaterialPageRoute(
                                         builder: (context) {
-                                          return DetailPaymentPage();
+                                          return DetailPaymentPage(
+                                            paymentModel:[],
+                                            durasi: DurationModel(durasi: '1D', value: 1, isPicked: true),
+                                          );
                                         },
                                       ));
                                     },

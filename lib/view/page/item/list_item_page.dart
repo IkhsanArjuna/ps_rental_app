@@ -9,7 +9,8 @@ import 'package:ps_rental_app/view/page/cart/cart_page.dart';
 import 'package:ps_rental_app/view/page/detail/detail_item_page.dart';
 
 class ListItemPage extends StatelessWidget {
-  const ListItemPage({super.key});
+  final String filter;
+  const ListItemPage({super.key, required this.filter});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class ListItemPage extends StatelessWidget {
           ],
         ),
         body: FutureBuilder(
-            future: ItemData().getAllItemFilter("PS4"),
+            future: ItemData().getAllItemFilter(filter),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -68,7 +69,7 @@ class ListItemPage extends StatelessWidget {
                 return Consumer<CartProvider>(
                     builder: (context, provider, child) {
                   return ListView.builder(
-                    itemCount: provider.itemDummy.length,
+                    itemCount: allItem.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(
@@ -101,13 +102,11 @@ class ListItemPage extends StatelessWidget {
                                     height: MediaQuery.of(context).size.height,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            image: provider.itemDummy[index]
-                                                        .image ==
-                                                    ''
+                                            image: allItem[index].image == ''
                                                 ? NetworkImage(
                                                     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/PS4-Console-wDS4.jpg/640px-PS4-Console-wDS4.jpg")
-                                                : NetworkImage(provider
-                                                    .itemDummy[index].image),
+                                                : NetworkImage(
+                                                    allItem[index].image),
                                             fit: BoxFit.fill),
                                         color: Color.fromRGBO(217, 217, 217, 1),
                                         borderRadius: BorderRadius.all(
@@ -130,7 +129,7 @@ class ListItemPage extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            provider.itemDummy[index].name,
+                                            allItem[index].name,
                                             style: GoogleFonts.poppins(
                                                 color: Colors.white,
                                                 fontSize: 14),
@@ -160,9 +159,7 @@ class ListItemPage extends StatelessWidget {
                                                       child: Icon(
                                                         Icons.star,
                                                         color: i + 1 <=
-                                                                provider
-                                                                    .itemDummy[
-                                                                        index]
+                                                                allItem[index]
                                                                     .rating
                                                             ? Color.fromRGBO(
                                                                 255, 196, 3, 1)
@@ -183,7 +180,7 @@ class ListItemPage extends StatelessWidget {
                                                         33, 35, 39, 0.68),
                                                     child: Center(
                                                       child: Text(
-                                                        "Stock : ${provider.itemDummy[index].stock}",
+                                                        "Stock : ${allItem[index].stock}",
                                                         style:
                                                             GoogleFonts.poppins(
                                                                 fontSize: 12,
@@ -212,9 +209,7 @@ class ListItemPage extends StatelessWidget {
                                                 Text(
                                                   CurrencyConverter
                                                       .convertToIdr(
-                                                          provider
-                                                              .itemDummy[index]
-                                                              .price,
+                                                          allItem[index].price,
                                                           2),
                                                   style: GoogleFonts.poppins(
                                                       color: Colors.white,
@@ -258,8 +253,7 @@ class ListItemPage extends StatelessWidget {
                                                                         Color.fromRGBO(47, 128, 237, 1)))),
                                                         onPressed: () {
                                                           provider.addToCart(
-                                                              provider.itemDummy[
-                                                                  index]);
+                                                              allItem[index]);
                                                         },
                                                         child: Text(
                                                           "Tambah",
@@ -281,7 +275,7 @@ class ListItemPage extends StatelessWidget {
                                           Text(
                                             maxLines: 4,
                                             overflow: TextOverflow.ellipsis,
-                                            provider.itemDummy[index].deskripsi,
+                                            allItem[index].deskripsi,
                                             style: GoogleFonts.poppins(
                                                 height: 1.7,
                                                 color: Colors.white,

@@ -49,6 +49,7 @@ dependencies:
   fluttertoast: ^8.2.6
   shared_preferences: ^2.2.3
   jwt_decoder: ^2.0.1
+  url_launcher: ^6.3.0
 
 
 dev_dependencies:

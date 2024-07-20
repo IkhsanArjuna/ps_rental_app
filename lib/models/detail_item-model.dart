@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class DetailItemModel {
   final int idItem;
@@ -44,8 +43,8 @@ class DetailItemModel {
 }
 
 class AllReviewModel {
-  final Int IdReview;
-  final Int IdUser;
+  final int IdReview;
+  final int IdUser;
   final String name;
   final String avatar;
   final String Message;
@@ -75,8 +74,8 @@ class AllReviewModel {
 }
 
 class AllGameModel {
-  final Int Id;
-  final Int IdPsGame;
+  final int Id;
+  final int IdPsGame;
   final String name;
   final String image;
   final String deskripsi;
@@ -92,7 +91,7 @@ class AllGameModel {
     return AllGameModel(
       Id: json['id'] ?? 0,
       name: json['name'] ?? '',
-      IdPsGame: json['id_ps_game'] ?? '',
+      IdPsGame: json['id_ps_game'] ?? 0,
       image: json['image'] ?? '',
       deskripsi: json['deskripsi'] ?? '',
 

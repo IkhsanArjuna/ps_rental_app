@@ -5,6 +5,7 @@ import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/bottom_nav_provider.dart';
 import 'package:ps_rental_app/provider/cart_provider.dart';
 import 'package:ps_rental_app/provider/chat_forum_provider.dart';
+import 'package:ps_rental_app/provider/confirmation_payment_provider.dart';
 import 'package:ps_rental_app/provider/cs_provider.dart';
 import 'package:ps_rental_app/provider/edit_profile_provider.dart';
 import 'package:ps_rental_app/provider/single_product_payment_provider.dart';
@@ -35,7 +36,8 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => EditProfileProvider(),
-        )
+        ),
+        ChangeNotifierProvider(create: (context) => ConfirmationPaymentProvider(),)
       ],
       child: MyApp(
         token: prefs.getString('token'),

@@ -96,12 +96,15 @@ class _HomeWidgetState extends State<HomeWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       MenuItemWidget(
+                        filter: "PS5",
                         name: "PS 5",
                       ),
                       MenuItemWidget(
+                        filter: "PS4",
                         name: "PS 4",
                       ),
                       MenuItemWidget(
+                        filter: "PS3",
                         name: "PS 3",
                       ),
                     ],
@@ -113,12 +116,15 @@ class _HomeWidgetState extends State<HomeWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         MenuItemWidget(
+                          filter: "Xbox",
                           name: "Xbox",
                         ),
                         MenuItemWidget(
+                          filter: "Handheld",
                           name: "Handheld",
                         ),
                         MenuItemWidget(
+                          filter: "Addon",
                           name: "AddOn",
                         ),
                       ],
