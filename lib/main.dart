@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: Colors.black.withOpacity(0.5))),
       debugShowCheckedModeBanner: false,
       home: Consumer<AuthProvider>(builder: (context, provider, child) {
-        if (token == '') {
+        if (token == null || token == '') {
           return OnboardingPage();
         } else {
           if (JwtDecoder.isExpired(token) == false) {

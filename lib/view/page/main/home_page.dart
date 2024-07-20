@@ -16,10 +16,10 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int current_index = 0;
   List<String> listimage = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkW7mIDoInLW_4pukaDTghF-eT2P_WRxQ1Sg&s",
-    "https://i.pinimg.com/736x/b2/cd/4b/b2cd4b8944bd3f9792676ce7eb0ee7a3.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNGIWcxqEBqQbHTcfWO7g_xw0m7ACO6k-CNw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlC3-18OhsXS_r8eAHW-dL_wc3ii5ssr_-8w&s,"
+    "https://i.pinimg.com/originals/9e/9f/9c/9e9f9c9f88e4c737590d37c344963cdb.jpg",
+    "https://i.pinimg.com/736x/5a/c8/41/5ac841b712c99732f052ac9c109964c2.jpg",
+    "https://media.istockphoto.com/id/1094792720/id/foto/warna-tekstur-kuning-cerah-latar-belakang-wallpaper-kuning.jpg?s=170667a&w=0&k=20&c=Cfo5dbE2t6j_8GTOpw-WjemfVxIX1B6c68Mb2HRdeiM=",
+    "https://e1.pxfuel.com/desktop-wallpaper/969/587/desktop-wallpaper-warna-polos-gambar-warna-ungu.jpg"
   ];
   @override
   Widget build(BuildContext context) {
