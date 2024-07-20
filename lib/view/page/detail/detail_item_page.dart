@@ -249,7 +249,71 @@ class _DetailItemPageState extends State<DetailItemPage> {
                 style: GoogleFonts.poppins(color: Colors.white, fontSize: 15),
               ),
             ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.4,
+              color: Colors.purple,
+              child: 
+              Column(
+                children: [
+                  Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.1,
+              color: Colors.amber,
+              child: Column(
+                children: [
+                  Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.05,
+              color: Colors.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+              width: MediaQuery.of(context).size.width *0.5,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.blue,
+              child: Text( 
+                    "Ulasan",
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+                  ),
+                   Expanded(child: 
+                  Container(
+                    color: Colors.green,
+                    child:
+                     Align( 
+                      alignment:Alignment.topRight,
+                       child: Text( 
+                                           "Lihat Semua",
+                                           style: GoogleFonts.poppins(fontWeight: FontWeight.bold,
+                                           color: Colors.white),
+                                     ),
+                     ),
+
+                  )),
+                 
+
+        
+                ],
+                
+
+              ),
+                    
+
+                  )
+                ],
+              ),
+
+                    
+                  )
+                ],
+              ),
           )
+          
+          
         ],
       ),
       bottomSheet: Container(
@@ -494,6 +558,7 @@ class _DetailItemPageState extends State<DetailItemPage> {
           ],
         ),
       ),
+      
     );
   }
 }
