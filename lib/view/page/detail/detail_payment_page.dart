@@ -11,7 +11,7 @@ import 'package:ps_rental_app/provider/confirmation_payment_provider.dart';
 import 'package:ps_rental_app/provider/converter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DetailPaymentPage extends StatelessWidget {
+class DetailPaymentPage extends StatefulWidget {
   final List<CartItemModel> paymentModel;
   final DurationModel durasi;
 
@@ -19,10 +19,21 @@ class DetailPaymentPage extends StatelessWidget {
       {super.key, required this.paymentModel, required this.durasi});
 
   @override
+  State<DetailPaymentPage> createState() => _DetailPaymentPageState();
+}
+
+class _DetailPaymentPageState extends State<DetailPaymentPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ConfirmationPaymentProvider>().refreshPayment();
+  }
+
+  @override
   Widget build(BuildContext context) {
     context
         .read<ConfirmationPaymentProvider>()
-        .initialItemPayment(paymentModel);
+        .initialItemPayment(widget.paymentModel);
     return Scaffold(
       backgroundColor: Color.fromRGBO(14, 19, 31, 1),
       appBar: AppBar(
@@ -49,7 +60,7 @@ class DetailPaymentPage extends StatelessWidget {
               return Column(
                 children: [
                   ListView.builder(
-                    itemCount: paymentModel.length,
+                    itemCount: widget.paymentModel.length,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
@@ -75,11 +86,13 @@ class DetailPaymentPage extends StatelessWidget {
                                   height: MediaQuery.of(context).size.height,
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          image: paymentModel[index].image == ''
+                                          image: widget.paymentModel[index]
+                                                      .image ==
+                                                  ''
                                               ? NetworkImage(
                                                   "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/PS4-Console-wDS4.jpg/640px-PS4-Console-wDS4.jpg")
-                                              : NetworkImage(
-                                                  paymentModel[index].image)),
+                                              : NetworkImage(widget
+                                                  .paymentModel[index].image)),
                                       color: Colors.grey,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12))),
@@ -106,7 +119,7 @@ class DetailPaymentPage extends StatelessWidget {
                                         child: Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
-                                            paymentModel[index].name,
+                                            widget.paymentModel[index].name,
                                             style: GoogleFonts.poppins(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500),
@@ -134,7 +147,8 @@ class DetailPaymentPage extends StatelessWidget {
                                                     child: Icon(
                                                       Icons.star,
                                                       color: i + 1 <=
-                                                              paymentModel[
+                                                              widget
+                                                                  .paymentModel[
                                                                       index]
                                                                   .rating
                                                           ? Color.fromRGBO(
@@ -153,7 +167,9 @@ class DetailPaymentPage extends StatelessWidget {
                                           alignment: Alignment.centerLeft,
                                           child: Text(
                                             CurrencyConverter.convertToIdr(
-                                                paymentModel[index].price, 0),
+                                                widget
+                                                    .paymentModel[index].price,
+                                                0),
                                             style: GoogleFonts.poppins(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600),
@@ -182,7 +198,8 @@ class DetailPaymentPage extends StatelessWidget {
                                                       alignment:
                                                           Alignment.center,
                                                       child: Text(
-                                                        paymentModel[index]
+                                                        widget
+                                                            .paymentModel[index]
                                                             .quantity
                                                             .toString(),
                                                         style:
@@ -245,10 +262,10 @@ class DetailPaymentPage extends StatelessWidget {
                         child: Builder(builder: (context) {
                           int totalHarga = 0;
                           int allTotal = 0;
-                          for (var element in paymentModel) {
+                          for (var element in widget.paymentModel) {
                             totalHarga += (element.price * element.quantity);
                           }
-                          allTotal = totalHarga * durasi.value;
+                          allTotal = totalHarga * widget.durasi.value;
                           return Column(
                             children: [
                               Container(
@@ -303,7 +320,7 @@ class DetailPaymentPage extends StatelessWidget {
                                                   .width *
                                               0.01),
                                       child: Text(
-                                        "${durasi.value} Hari",
+                                        "${widget.durasi.value} Hari",
                                         style: GoogleFonts.poppins(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w500),
@@ -370,7 +387,7 @@ class DetailPaymentPage extends StatelessWidget {
           builder: (context, provider, child) {
         return provider.paymentSuccesModel == null
             ? PesanBayarButtonWidget(
-                durationModel: durasi,
+                durationModel: widget.durasi,
               )
             : Container(
                 width: MediaQuery.of(context).size.width,
