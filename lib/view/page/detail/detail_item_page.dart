@@ -255,68 +255,155 @@ class _DetailItemPageState extends State<DetailItemPage> {
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.4,
-              color: Colors.purple,
-              child: 
-              Column(
-                children: [
-                  Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.1,
-              color: Colors.amber,
-              child: Column(
-                children: [
-                  Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.05,
-              color: Colors.red,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-              width: MediaQuery.of(context).size.width *0.5,
-              height: MediaQuery.of(context).size.height,
-              color: Colors.blue,
-              child: Text( 
-                    "Ulasan",
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
+            height: MediaQuery.of(context).size.height * 0.4,
+            color: Colors.purple,
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  color: Colors.amber,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.02,
+                                vertical:
+                                    MediaQuery.of(context).size.height * 0.001,
+                              ),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                height: MediaQuery.of(context).size.height,
+                                color: Colors.blue,
+                                child: Text(
+                                  "Ulasan",
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                                child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.02,
+                                vertical:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              child: Container(
+                                color: Colors.green,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "Lihat Semua",
+                                    style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            )),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.star_outlined,
+                                  size: 35,
+                                  color: Colors.yellow,
+                                )),
+                            Text("5.O",
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.white)),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.02,
+                                vertical:
+                                    MediaQuery.of(context).size.height * 0.005,
+                              ),
+                              child: Text(
+                                "10 rating/2 ulasan",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 10, color: Colors.grey),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                   Expanded(child: 
-                  Container(
-                    color: Colors.green,
-                    child:
-                     Align( 
-                      alignment:Alignment.topRight,
-                       child: Text( 
-                                           "Lihat Semua",
-                                           style: GoogleFonts.poppins(fontWeight: FontWeight.bold,
-                                           color: Colors.white),
-                                     ),
-                     ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  color: Colors.blue,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        color: Colors.amber,
+                        child: Row(
+                          mainAxisAlignment:  MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              height: MediaQuery.of(context).size.height,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/31bc9252-553c-4ed1-ba82-e37be041cb20/de48tjj-0eac2b94-7693-4cde-9c8e-ed9604898673.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzMxYmM5MjUyLTU1M2MtNGVkMS1iYTgyLWUzN2JlMDQxY2IyMFwvZGU0OHRqai0wZWFjMmI5NC03NjkzLTRjZGUtOWM4ZS1lZDk2MDQ4OTg2NzMuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.h7y_AlWzho51OzT3r0UsmlONVPupwM0N76jrkRolDGA")),
+                                  shape: BoxShape.circle),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.7,
+                              height: MediaQuery.of(context).size.height*0.03,
+                              color: Colors.green,
+                              child: Text("SUMARGO",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16, color: Colors.white),),
+                            
+                            )
+                            
+                          ],
+                          
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        color: Colors.pink,
 
-                  )),
-                 
-
-        
-                ],
-                
-
-              ),
-                    
-
-                  )
-                ],
-              ),
-
-                    
-                  )
-                ],
-              ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           )
-          
-          
         ],
       ),
       bottomSheet: Container(
@@ -509,8 +596,11 @@ class _DetailItemPageState extends State<DetailItemPage> {
                                       Navigator.push(context, MaterialPageRoute(
                                         builder: (context) {
                                           return DetailPaymentPage(
-                                            paymentModel:[],
-                                            durasi: DurationModel(durasi: '1D', value: 1, isPicked: true),
+                                            paymentModel: [],
+                                            durasi: DurationModel(
+                                                durasi: '1D',
+                                                value: 1,
+                                                isPicked: true),
                                           );
                                         },
                                       ));
@@ -564,7 +654,6 @@ class _DetailItemPageState extends State<DetailItemPage> {
           ],
         ),
       ),
-      
     );
   }
 }
