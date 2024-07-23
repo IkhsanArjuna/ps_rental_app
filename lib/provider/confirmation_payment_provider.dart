@@ -36,6 +36,12 @@ class ConfirmationPaymentProvider extends ChangeNotifier {
     return true;
   }
 
+  void refreshPayment() {
+    if (paymentSuccesModel != null) {
+      paymentSuccesModel = null;
+    }
+  }
+
   Future<bool> updateRent() async {
     updateLoading = true;
     notifyListeners();
@@ -43,18 +49,18 @@ class ConfirmationPaymentProvider extends ChangeNotifier {
       await PaymentData().updateRent(paymentSuccesModel!.orderId).then(
         (value) {
           message = value;
-           updateLoading = false;
-           notifyListeners();
+          updateLoading = false;
+          notifyListeners();
           return true;
         },
       );
     } catch (e) {
       message = 'Error';
-       updateLoading = false;
-       notifyListeners();
+      updateLoading = false;
+      notifyListeners();
       return false;
     }
-     updateLoading = false;
+    updateLoading = false;
     notifyListeners();
     return true;
   }
