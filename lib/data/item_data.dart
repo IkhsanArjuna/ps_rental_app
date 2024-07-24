@@ -52,4 +52,36 @@ class ItemData {
       return null;
     }
   }
+
+  Future<bool> getSingleReviewByUserAndItem(int idUser, int idItem) async {
+    var response = await http.get(Uri.parse(
+        "${baseUrl}/other/review?id_user=${idUser}&id_barang=${idItem}"));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> createReview(
+      int idUser, int idItem, int rate, String message) async {
+    var response = await http.post(
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json",
+        },
+        Uri.parse("${baseUrl}/item/review"),
+        body: jsonEncode({
+          "id_barang": idItem,
+          "id_user": idUser,
+          "message": message,
+          "rate": rate
+        }));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      log(response.body);
+      return false;
+    }
+  }
 }
