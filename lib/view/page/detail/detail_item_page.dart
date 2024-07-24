@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ps_rental_app/models/duration_model.dart';
@@ -327,7 +328,7 @@ class _DetailItemPageState extends State<DetailItemPage> {
                             IconButton(
                                 onPressed: () {},
                                 icon: Icon(
-                                  Icons.star_outlined,
+                                  Icons.star_rate_rounded,
                                   size: 35,
                                   color: Colors.yellow,
                                 )),
@@ -393,9 +394,34 @@ class _DetailItemPageState extends State<DetailItemPage> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.of(context).size.width*0.9,
                         height: MediaQuery.of(context).size.height * 0.04,
                         color: Colors.pink,
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.star_rate_rounded,
+                                  
+                                  color: Colors.yellow,
+                                )),
+                            IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.star_rate_rounded,
+                                  
+                                  color: Colors.yellow,
+                                )),
+
+                            
+                            
+
+                          ],
+                        ) ,
+                         
 
                       )
                     ],
