@@ -8,6 +8,7 @@ import 'package:ps_rental_app/provider/chat_forum_provider.dart';
 import 'package:ps_rental_app/provider/confirmation_payment_provider.dart';
 import 'package:ps_rental_app/provider/cs_provider.dart';
 import 'package:ps_rental_app/provider/edit_profile_provider.dart';
+import 'package:ps_rental_app/provider/rent_detail_review_provider.dart';
 import 'package:ps_rental_app/provider/single_product_payment_provider.dart';
 import 'package:ps_rental_app/view/page/main/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +38,8 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => EditProfileProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => ConfirmationPaymentProvider(),)
+        ChangeNotifierProvider(create: (context) => ConfirmationPaymentProvider(),),
+        ChangeNotifierProvider(create: (context) => RentDetailReviewProvider(),)
       ],
       child: MyApp(
         token: prefs.getString('token'),
