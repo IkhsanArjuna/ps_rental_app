@@ -7,6 +7,9 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:ps_rental_app/data/auth_data.dart';
+import 'package:ps_rental_app/data/item_data.dart';
+import 'package:ps_rental_app/models/detail_item-model.dart';
 import 'package:ps_rental_app/models/duration_model.dart';
 import 'package:ps_rental_app/models/payment_model.dart';
 import 'package:ps_rental_app/provider/auth_provider.dart';
@@ -16,7 +19,9 @@ import 'package:ps_rental_app/view/page/detail/detail_payment_page.dart';
 import 'package:ps_rental_app/view/page/detail/detail_review_page.dart';
 
 class DetailItemPage extends StatefulWidget {
-  const DetailItemPage({super.key});
+  final int idBarang;
+
+  const DetailItemPage({super.key, required this.idBarang});
 
   @override
   State<DetailItemPage> createState() => _DetailItemPageState();
@@ -60,337 +65,372 @@ class _DetailItemPageState extends State<DetailItemPage> {
           )
         ],
       ),
-      body: ListView(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.3,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                        'https://web.kominfo.go.id/sites/default/files/kominfo-dirjen-aptika-semuel-semmy-DRA-3.jpeg'),
-                    fit: BoxFit.fill)),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.03,
-              vertical: MediaQuery.of(context).size.height * 0.01,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.07,
-              color: Color.fromRGBO(14, 19, 31, 1),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Rp.250.000",
-                    style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "PS5 ULtimate Game Experience",
-                    style:
-                        GoogleFonts.poppins(color: Colors.white, fontSize: 15),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.03,
-              vertical: MediaQuery.of(context).size.height * 0.01,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.12,
-              color: Color.fromARGB(14, 19, 31, 1),
-              child: Column(
+      body: FutureBuilder(
+          future: ItemData().getSingleItem(widget.idBarang),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Center(child: CircularProgressIndicator())],
+              );
+            } else if (snapshot.data == null) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Center(child: Text(" Data Not Found"))],
+              );
+            } else {
+              DetailItemModel ItemSingle = snapshot.data!;
+              return ListView(
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    color: Color.fromRGBO(14, 19, 31, 1),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Pilih Durasi: ",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Durasi Peminjaman",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white, fontSize: 12),
-                        ),
-                      ],
-                    ),
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(ItemSingle.image),
+                            fit: BoxFit.fill)),
                   ),
-                  Container(
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.03,
+                      vertical: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.07,
-                      child: Consumer<SingelProductPaymentProvider>(
-                          builder: (context, provider, child) {
-                        return ListView.builder(
-                          itemCount: provider.durasi.length,
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                                onTap: () {
-                                  provider.changeDuration(index);
-                                },
-                                child: DurasiPinjam(
-                                    isPicked: provider.durasi[index].isPicked,
-                                    name: provider.durasi[index].durasi));
-                          },
-                        );
-                      }))
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.03,
-              vertical: MediaQuery.of(context).size.height * 0.001,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.08,
-              color: Color.fromRGBO(14, 19, 31, 1),
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    color: Color.fromRGBO(14, 19, 31, 1),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Detail Produk ",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                      color: Color.fromRGBO(14, 19, 31, 1),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            CurrencyConverter.convertToIdr(ItemSingle.price, 0),
+                            style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            ItemSingle.name,
+                            style: GoogleFonts.poppins(
+                                color: Colors.white, fontSize: 15),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    color: Color.fromRGBO(14, 19, 31, 1),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          height: MediaQuery.of(context).size.height,
-                          color: Color.fromRGBO(14, 19, 31, 1),
-                          child: Text(
-                            "Zona ",
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 13,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.03,
+                      vertical: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      color: Color.fromARGB(14, 19, 31, 1),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            color: Color.fromRGBO(14, 19, 31, 1),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Pilih Durasi: ",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "Durasi Peminjaman",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white, fontSize: 12),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
+                          Container(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height,
-                              color: Color.fromRGBO(14, 19, 31, 1),
-                              child: Text(
-                                "Playstation 5 ",
-                                style: GoogleFonts.poppins(
-                                  color: Colors.blue,
-                                  fontSize: 13,
-                                ),
-                              )),
-                        )
-                      ],
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: Consumer<SingelProductPaymentProvider>(
+                                  builder: (context, provider, child) {
+                                return ListView.builder(
+                                  itemCount: provider.durasi.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          provider.changeDuration(index);
+                                        },
+                                        child: DurasiPinjam(
+                                            isPicked:
+                                                provider.durasi[index].isPicked,
+                                            name:
+                                                provider.durasi[index].durasi));
+                                  },
+                                );
+                              }))
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.03,
-              vertical: MediaQuery.of(context).size.height * 0.001,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.03,
-              color: Color.fromRGBO(14, 19, 31, 1),
-              child: Text(
-                "Deskripsi Produk ",
-                style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.03,
-              vertical: MediaQuery.of(context).size.height * 0.001,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.4,
-              constraints:
-                  BoxConstraints(maxHeight: double.infinity, minHeight: 0),
-              child: Text(
-                "Paket rental PS5 Ultimate Game Experience memberikan Anda kesempatan untuk menikmati berbagai game populer dengan satu paket lengkap",
-                style: GoogleFonts.poppins(color: Colors.white, fontSize: 15),
-              ),
-            ),
-          ),
-          Container(
-            constraints: BoxConstraints(
-         maxHeight: double.infinity,
-        minHeight: MediaQuery.of(context).size.height * 0.4,
-        maxWidth: MediaQuery.of(context).size.width,
-        minWidth: MediaQuery.of(context).size.width,
-            ),
-            
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.04,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.02,
-                                vertical:
-                                    MediaQuery.of(context).size.height * 0.001,
-                              ),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height: MediaQuery.of(context).size.height,
-                                child: Text(
-                                  "Ulasan",
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.03,
+                      vertical: MediaQuery.of(context).size.height * 0.001,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      color: Color.fromRGBO(14, 19, 31, 1),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            color: Color.fromRGBO(14, 19, 31, 1),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Detail Produk ",
                                   style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.white),
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
+                              ],
                             ),
-                            Expanded(
-                                child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.02,
-                                vertical:
-                                    MediaQuery.of(context).size.height * 0.01,
-                              ),
-                              child: Container(
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: TextButton(
-                                    style: ButtonStyle(
-                                        padding: WidgetStatePropertyAll(
-                                            EdgeInsets.zero)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                DetailReviewPage(),
-                                          ));
-                                    },
-                                    child: Text(
-                                      "Lihat Semua",
-                                      style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            color: Color.fromRGBO(14, 19, 31, 1),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.height,
+                                  color: Color.fromRGBO(14, 19, 31, 1),
+                                  child: Text(
+                                    "Zona ",
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 13,
                                     ),
                                   ),
                                 ),
-                              ),
-                            )),
-                          ],
-                        ),
+                                Expanded(
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      color: Color.fromRGBO(14, 19, 31, 1),
+                                      child: Text(
+                                        ItemSingle.type,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.blue,
+                                          fontSize: 13,
+                                        ),
+                                      )),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.star_rate_rounded,
-                                  size: 35,
-                                  color: Colors.yellow,
-                                )),
-                            Text("5.O",
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.white)),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.02,
-                                vertical:
-                                    MediaQuery.of(context).size.height * 0.005,
-                              ),
-                              child: Text(
-                                "10 rating/2 ulasan",
-                                style: GoogleFonts.poppins(
-                                    fontSize: 10, color: Colors.grey),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
-                ListView.builder(
-                  itemCount: 2,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ReviewCartWidget();
-                    
-                  },
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.06,
-          )
-        ],
-      ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.03,
+                      vertical: MediaQuery.of(context).size.height * 0.001,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.03,
+                      color: Color.fromRGBO(14, 19, 31, 1),
+                      child: Text(
+                        "Deskripsi Produk ",
+                        style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.03,
+                      vertical: MediaQuery.of(context).size.height * 0.001,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      constraints: BoxConstraints(
+                          maxHeight: double.infinity, minHeight: 0),
+                      child: Text(
+                        ItemSingle.deskripsi,
+                        style: GoogleFonts.poppins(
+                            color: Colors.white, fontSize: 15),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    constraints: BoxConstraints(
+                      maxHeight: double.infinity,
+                      minHeight: MediaQuery.of(context).size.height * 0.4,
+                      maxWidth: MediaQuery.of(context).size.width,
+                      minWidth: MediaQuery.of(context).size.width,
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.width *
+                                                0.02,
+                                        vertical:
+                                            MediaQuery.of(context).size.height *
+                                                0.001,
+                                      ),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        child: Text(
+                                          "Ulasan",
+                                          style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                        child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.width *
+                                                0.02,
+                                        vertical:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
+                                      ),
+                                      child: Container(
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: TextButton(
+                                            style: ButtonStyle(
+                                                padding: WidgetStatePropertyAll(
+                                                    EdgeInsets.zero)),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DetailReviewPage(),
+                                                  ));
+                                            },
+                                            child: Text(
+                                              "Lihat Semua",
+                                              style: GoogleFonts.poppins(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.star_rate_rounded,
+                                          size: 35,
+                                          color: Colors.yellow,
+                                        )),
+                                    Text(ItemSingle.rating.toString(),
+                                        style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: Colors.white)),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.width *
+                                                0.02,
+                                        vertical:
+                                            MediaQuery.of(context).size.height *
+                                                0.005,
+                                      ),
+                                      child: Text(
+                                        ItemSingle.AllReviews.length
+                                                .toString() +
+                                            "Ulasan",
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 10, color: Colors.grey),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        ListView.builder(
+                          itemCount: ItemSingle.AllReviews.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return ReviewCartWidget(AllReview: ItemSingle.AllReviews[index],);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                  )
+                ],
+              );
+            }
+          }),
       bottomSheet: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.06,
@@ -645,8 +685,9 @@ class _DetailItemPageState extends State<DetailItemPage> {
 
 class ReviewCartWidget extends StatelessWidget {
   const ReviewCartWidget({
-    super.key,
+    super.key,required this.AllReview
   });
+  final AllReviewModel AllReview ;
 
   @override
   Widget build(BuildContext context) {
@@ -660,31 +701,30 @@ class ReviewCartWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-           
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.06,
-            
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: MediaQuery.of(context).size.width*0.03,
-                    left: MediaQuery.of(context).size.width*0.03),
+                  margin: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width * 0.03,
+                      left: MediaQuery.of(context).size.width * 0.03),
                   width: MediaQuery.of(context).size.width * 0.1,
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: NetworkImage(
-                              "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/31bc9252-553c-4ed1-ba82-e37be041cb20/de48tjj-0eac2b94-7693-4cde-9c8e-ed9604898673.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzMxYmM5MjUyLTU1M2MtNGVkMS1iYTgyLWUzN2JlMDQxY2IyMFwvZGU0OHRqai0wZWFjMmI5NC03NjkzLTRjZGUtOWM4ZS1lZDk2MDQ4OTg2NzMuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.h7y_AlWzho51OzT3r0UsmlONVPupwM0N76jrkRolDGA"),
-                              fit: BoxFit.fill),
+                              AllReview.avatar),
+                          fit: BoxFit.fill),
                       shape: BoxShape.circle),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   height: MediaQuery.of(context).size.height * 0.03,
                   child: Text(
-                    "SUMARGO",
+                    AllReview.avatar,
                     style:
                         GoogleFonts.poppins(fontSize: 16, color: Colors.white),
                   ),
@@ -711,7 +751,7 @@ class ReviewCartWidget extends StatelessWidget {
                     ),
                   Align(
                     alignment: Alignment.center,
-                    child: Text("1 Minggu lalu",
+                    child: Text(AllReview.ReviewAt,
                         style: GoogleFonts.poppins(
                             fontSize: 12, color: Colors.grey)),
                   )
@@ -727,7 +767,7 @@ class ReviewCartWidget extends StatelessWidget {
               minWidth: MediaQuery.of(context).size.width * 0.95,
             ),
             child: Text(
-              "Novel “Dilan Dia adalah Dilanku Tahun 1990” karya Pidi Baiq mengisahkan Milea Adnan Hussain, seorang perempuan yang pindah ke Bandung karena tugas ayahnya sebagai tentara. Milea awalnya menyukai Beni di Jakarta, tetapi setelah pindah, dia tertarik pada Dilan. Kisah cinta mereka berdua menghadapi beberapa kendala, termasuk persaingan dengan mahasiswa ITB bernama Kang Adi dan musuh Milea, Susi.",
+              AllReview.message,
               style: GoogleFonts.poppins(fontSize: 12, color: Colors.white),
             ),
           ),

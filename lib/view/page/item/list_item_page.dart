@@ -79,7 +79,9 @@ class ListItemPage extends StatelessWidget {
                           onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailItemPage(),
+                                builder: (context) => DetailItemPage(
+                                  idBarang: allItem[index].idItem,
+                                ),
                               )),
                           child: Container(
                             width: MediaQuery.of(context).size.width,

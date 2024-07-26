@@ -47,16 +47,16 @@ class AllReviewModel {
   final int IdUser;
   final String name;
   final String avatar;
-  final String Message;
+  final String message;
   final dynamic rate;
-  final int ReviewAt;
+  final String ReviewAt;
 
   AllReviewModel({
     required this.IdReview,
     required this.IdUser,
     required this.name,
     required this.avatar,
-    required this.Message,
+    required this.message,
     required this.rate,
     required this.ReviewAt,
   });
@@ -66,9 +66,9 @@ class AllReviewModel {
       name: json['name'] ?? '',
       IdUser: json['id_user'] ?? '',
       avatar: json['avatar'] ?? '',
-      Message: json['message'] ?? '',
+      message: json['message'] ?? '',
       rate: json['rate'] ?? 0,
-      ReviewAt: json['review_at'] ?? 0,
+      ReviewAt: json['review_at'] ?? '',
     );
   }
 }
