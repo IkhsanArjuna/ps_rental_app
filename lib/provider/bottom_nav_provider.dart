@@ -6,10 +6,10 @@ import 'package:ps_rental_app/view/widget/status_widget.dart';
 class BottomNavProvider extends ChangeNotifier {
   List<Widget> menuItem = [
     const HomeWidget(listimage: [
-   "https://i.pinimg.com/originals/9e/9f/9c/9e9f9c9f88e4c737590d37c344963cdb.jpg",
-    "https://i.pinimg.com/736x/5a/c8/41/5ac841b712c99732f052ac9c109964c2.jpg",
-    "https://media.istockphoto.com/id/1094792720/id/foto/warna-tekstur-kuning-cerah-latar-belakang-wallpaper-kuning.jpg?s=170667a&w=0&k=20&c=Cfo5dbE2t6j_8GTOpw-WjemfVxIX1B6c68Mb2HRdeiM=",
-    "https://e1.pxfuel.com/desktop-wallpaper/969/587/desktop-wallpaper-warna-polos-gambar-warna-ungu.jpg"
+   "https://i.ytimg.com/vi/NmgOWKQj5-Y/maxresdefault.jpg",
+    "https://www.billboard.com/wp-content/uploads/2024/06/PS5-Slim-Getty-Hero.jpg?w=942&h=623&crop=1",
+    "https://selular.id/wp-content/uploads/2019/09/playstation-5.jpeg",
+    "https://images.everyeye.it/img-notizie/non-ps5-playstation-4-riceve-aggiornamento-novitA-v4-670948.jpg"
   ]),
     const StatusWidget(),
     const ProfileWidget()
