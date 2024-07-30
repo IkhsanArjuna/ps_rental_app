@@ -360,7 +360,7 @@ class ReceiverCsWidget extends StatelessWidget {
                 image: DecorationImage(
                     image: avatar == ''
                         ? NetworkImage(
-                            "https://images8.alphacoders.com/119/1196416.jpg")
+                            "https://www.shutterstock.com/image-vector/bright-green-yellow-dotted-background-260nw-1558216478.jpg")
                         : NetworkImage(avatar),
                     fit: BoxFit.fill),
                 shape: BoxShape.circle),

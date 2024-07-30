@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class DetailReviewPage extends StatelessWidget {
   const DetailReviewPage({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class DetailReviewPage extends StatelessWidget {
             ),
           ),
           ListView.builder(
-              itemCount: 2,
+              itemCount: 1,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {

@@ -724,7 +724,7 @@ class ReviewCartWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.7,
                   height: MediaQuery.of(context).size.height * 0.03,
                   child: Text(
-                    AllReview.avatar,
+                    AllReview.name,
                     style:
                         GoogleFonts.poppins(fontSize: 16, color: Colors.white),
                   ),
