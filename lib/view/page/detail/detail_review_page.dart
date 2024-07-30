@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ps_rental_app/view/page/customer_service/list_chat_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailReviewPage extends StatelessWidget {

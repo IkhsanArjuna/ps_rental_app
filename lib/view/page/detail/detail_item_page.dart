@@ -1,18 +1,13 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:ps_rental_app/data/auth_data.dart';
 import 'package:ps_rental_app/data/item_data.dart';
 import 'package:ps_rental_app/models/detail_item-model.dart';
 import 'package:ps_rental_app/models/duration_model.dart';
-import 'package:ps_rental_app/models/payment_model.dart';
-import 'package:ps_rental_app/provider/auth_provider.dart';
 import 'package:ps_rental_app/provider/converter.dart';
 import 'package:ps_rental_app/provider/single_product_payment_provider.dart';
 import 'package:ps_rental_app/view/page/detail/detail_payment_page.dart';
