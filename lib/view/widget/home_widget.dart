@@ -98,14 +98,17 @@ class _HomeWidgetState extends State<HomeWidget> {
                       MenuItemWidget(
                         filter: "PS5",
                         name: "PS 5",
+                        image:"assets/PS5.jpeg",
                       ),
                       MenuItemWidget(
                         filter: "PS4",
                         name: "PS 4",
+                        image: "assets/PS4.jpeg",
                       ),
                       MenuItemWidget(
                         filter: "PS3",
                         name: "PS 3",
+                        image: "assets/PS3.jpeg",
                       ),
                     ],
                   ),
@@ -118,14 +121,17 @@ class _HomeWidgetState extends State<HomeWidget> {
                         MenuItemWidget(
                           filter: "Xbox",
                           name: "Xbox",
+                          image: "assets/Icon_Xbox.png",
                         ),
                         MenuItemWidget(
                           filter: "Handheld",
                           name: "Handheld",
+                          image: "assets/Icon_Handheld.png",
                         ),
                         MenuItemWidget(
                           filter: "Addon",
                           name: "AddOn",
+                          image: "assets/Icon_Addon.png",
                         ),
                       ],
                     ),

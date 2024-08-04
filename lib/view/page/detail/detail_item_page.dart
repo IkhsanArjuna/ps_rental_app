@@ -349,7 +349,7 @@ class _DetailItemPageState extends State<DetailItemPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        DetailReviewPage(),
+                                                        DetailReviewPage(allReview: ItemSingle.AllReviews,),
                                                   ));
                                             },
                                             child: Text(
