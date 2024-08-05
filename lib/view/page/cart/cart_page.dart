@@ -423,6 +423,7 @@ class CartItemWidget extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.18,
                       height: MediaQuery.of(context).size.height,
                       decoration: BoxDecoration(
+                        image: DecorationImage(image: AssetImage("assets/PS4.jpeg")),
                           color: Colors.grey,
                           borderRadius: BorderRadius.all(Radius.circular(15))),
                     ),

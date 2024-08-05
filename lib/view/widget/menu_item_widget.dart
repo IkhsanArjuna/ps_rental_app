@@ -5,8 +5,9 @@ import 'package:ps_rental_app/view/page/item/list_item_page.dart';
 class MenuItemWidget extends StatelessWidget {
   final String name;
   final String filter;
+  final String image;
 
-  const MenuItemWidget({super.key, required this.name,required this.filter});
+  const MenuItemWidget({super.key, required this.name, required this.filter,required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,11 @@ class MenuItemWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.1,
                   decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage(image),
+                    fit: BoxFit.fill),                                                                                         
                     color: Color.fromRGBO(217, 217, 217, 1),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderRadius: BorderRadius.all(Radius.circular(15),
+                    ),
                   )),
               Expanded(
                   child: Center(
