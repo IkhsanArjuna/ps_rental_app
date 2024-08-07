@@ -35,9 +35,7 @@ class _HomepageState extends State<Homepage> {
               ) : Container();
             }
           ),
-          
           IconButton(
-
             padding: EdgeInsets.zero,
             onPressed: () { },
             icon: Icon(Icons.shopping_cart_outlined),
