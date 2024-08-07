@@ -28,8 +28,12 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         actions: [
-          IconButton(onPressed:() {}, icon: Icon(Icons.search),
-          color: Colors.white,
+          Consumer<BottomNavProvider>(
+            builder: (context,provider,child) {
+              return provider.index != 0 ? IconButton(onPressed:() {}, icon: Icon(Icons.search),
+              color: Colors.white,
+              ) : Container();
+            }
           ),
           
           IconButton(
