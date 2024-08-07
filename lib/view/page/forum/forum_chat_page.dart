@@ -125,7 +125,7 @@ class _ForumChatPageState extends State<ForumChatPage> {
                             image: DecorationImage(
                                 image: widget.forumModel.image == ''
                                     ? NetworkImage(
-                                        "https://images8.alphacoders.com/119/1196416.jpg")
+                                        "https://d2ya09u1z2qlgr.cloudfront.net/public/storage/article/June2022/rZTzu5mKMB6iVyzzWhbg.jpeg")
                                     : NetworkImage(widget.forumModel.image),
                                 fit: BoxFit.cover),
                             color: Colors.grey,

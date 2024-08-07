@@ -138,7 +138,7 @@ class ListChatPage extends StatelessWidget {
                                                             .avatar ==
                                                         ''
                                                     ? NetworkImage(
-                                                        "https://images8.alphacoders.com/119/1196416.jpg")
+                                                        "https://www.shutterstock.com/image-vector/young-man-anime-style-character-600nw-2313503433.jpg")
                                                     : NetworkImage(provider
                                                         .csGroupFirst[index]
                                                         .users[i]
