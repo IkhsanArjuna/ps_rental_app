@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   google_fonts: ^6.2.1
-  carousel_slider: ^4.2.1
+  
   google_nav_bar: ^5.0.6
   socket_io_client: ^2.0.3+1
   http: ^1.2.1
@@ -50,6 +50,7 @@ dependencies:
   shared_preferences: ^2.2.3
   jwt_decoder: ^2.0.1
   url_launcher: ^6.3.0
+  carousel_slider_plus: ^7.0.0
 
 
 dev_dependencies:

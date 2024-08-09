@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ps_rental_app/data/forum_data.dart';
@@ -27,7 +27,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     return ListView(
       children: [
         CarouselSlider(
-          carouselController: CarouselController(),
+     controller: CarouselSliderController(),
           options: CarouselOptions(
               viewportFraction: 1,
               onPageChanged: (index, reason) {},
